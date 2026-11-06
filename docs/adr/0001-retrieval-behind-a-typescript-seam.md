@@ -1,0 +1,3 @@
+# Retrieval behind a TypeScript seam
+
+The app retrieves chunks itself and puts them in the prompt. The local model only writes the quiz draft and never calls a tool, because small local models call tools unreliably, so there is no MCP server either. Retrieval sits behind one TypeScript interface inside the Next.js app. The group implements it with their own ingestion, embeddings and vector store, and everything else is built and tested against a stub. We rejected a separate Python retrieval service because it would add a container and a second codebase on a laptop with 7.8 GB of RAM. Retrieval returns only chunks above a similarity threshold, and when none pass, the app refuses to generate a quiz rather than let the model write from its training data.
