@@ -11,4 +11,10 @@ export interface AttemptServiceInterface {
    * and `ValidationError` for answers that break those rules.
    */
   submitAttempt(input: SubmitAttemptInput): Promise<Attempt>;
+
+  /**
+   * Returns the highest attempt score for each of the given quizzes, keyed by
+   * quiz id. A quiz without attempts has no entry.
+   */
+  getBestScores(quizIds: string[]): Promise<Map<string, number>>;
 }

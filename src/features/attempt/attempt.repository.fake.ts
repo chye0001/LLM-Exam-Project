@@ -19,4 +19,18 @@ export class AttemptRepositoryFake implements AttemptRepositoryInterface {
     this.attempts.push(saved);
     return structuredClone(saved);
   }
+
+  async findBestScores(quizIds: string[]): Promise<Map<string, number>> {
+    const bestScores = new Map<string, number>();
+    for (const attempt of this.attempts) {
+      if (!quizIds.includes(attempt.quizId)) {
+        continue;
+      }
+      const best = bestScores.get(attempt.quizId);
+      if (best === undefined || attempt.score > best) {
+        bestScores.set(attempt.quizId, attempt.score);
+      }
+    }
+    return bestScores;
+  }
 }

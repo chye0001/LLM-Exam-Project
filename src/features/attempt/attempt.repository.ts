@@ -16,4 +16,19 @@ export class AttemptRepository implements AttemptRepositoryInterface {
       },
     });
   }
+
+  async findBestScores(quizIds: string[]): Promise<Map<string, number>> {
+    const groups = await this.prisma.attempt.groupBy({
+      by: ["quizId"],
+      where: { quizId: { in: quizIds } },
+      _max: { score: true },
+    });
+    const bestScores = new Map<string, number>();
+    for (const group of groups) {
+      if (group._max.score !== null) {
+        bestScores.set(group.quizId, group._max.score);
+      }
+    }
+    return bestScores;
+  }
 }
