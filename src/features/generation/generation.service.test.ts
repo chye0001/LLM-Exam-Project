@@ -49,6 +49,13 @@ describe("GenerationService", () => {
       "What is idea 4?",
       "What is idea 5?",
     ]);
+    expect(quiz.questions.map((question) => question.explanation)).toEqual([
+      "Idea 1 is explained in the chunks.",
+      "Idea 2 is explained in the chunks.",
+      "Idea 3 is explained in the chunks.",
+      "Idea 4 is explained in the chunks.",
+      "Idea 5 is explained in the chunks.",
+    ]);
     quiz.questions.forEach((question) => {
       expect(question.options).toHaveLength(4);
       expect(question.options.filter((option) => option.isCorrect)).toHaveLength(1);
