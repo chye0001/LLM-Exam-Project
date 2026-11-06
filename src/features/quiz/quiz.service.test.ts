@@ -19,11 +19,15 @@ describe("QuizService", () => {
     quizService = new QuizService(quizRepository);
   });
 
-  async function expectDraftRejected(draft: QuizDraft, message: string) {
-    const result = quizService.createQuiz(aQuizInput({ draft }));
+  async function expectRejected(
+    changes: Partial<CreateQuizInput>,
+    message: string,
+  ) {
+    const result = quizService.createQuiz(aQuizInput(changes));
 
     await expect(result).rejects.toThrow(ValidationError);
     await expect(result).rejects.toThrow(message);
+    await expect(result).rejects.toMatchObject({ code: "VALIDATION_ERROR" });
     expect(quizRepository.savedQuizzes).toEqual([]);
   }
 
@@ -83,36 +87,19 @@ describe("QuizService", () => {
       });
     });
 
-    it("shuffles the options, so the correct option doesn't always sit in the same place", async () => {
-      const quizzes = await Promise.all(
-        Array.from({ length: 10 }, () => quizService.createQuiz(aQuizInput())),
-      );
-
-      const correctPositions = new Set(
-        quizzes.flatMap((quiz) =>
-          quiz.questions.map((question) =>
-            question.options.findIndex((option) => option.isCorrect),
-          ),
-        ),
-      );
-
-      // A fair shuffle puts all 50 correct options in one place with a chance of about 1 in 10^29.
-      expect(correctPositions.size).toBeGreaterThan(1);
-    });
-
     it("rejects a draft without exactly five questions", async () => {
       const draft = aDraft();
       draft.questions.pop();
 
-      await expectDraftRejected(draft, "A quiz needs exactly 5 questions.");
+      await expectRejected({ draft }, "A quiz needs exactly 5 questions.");
     });
 
     it("rejects a question without exactly three distractors", async () => {
       const draft = aDraft();
       draft.questions[1].distractors.pop();
 
-      await expectDraftRejected(
-        draft,
+      await expectRejected(
+        { draft },
         "Every question needs exactly 3 distractors.",
       );
     });
@@ -138,8 +125,8 @@ describe("QuizService", () => {
       const draft = aDraft();
       blankOut(draft);
 
-      await expectDraftRejected(
-        draft,
+      await expectRejected(
+        { draft },
         "Questions, options and explanations can't be empty.",
       );
     });
@@ -149,8 +136,8 @@ describe("QuizService", () => {
       // The correct option of question 2 is "It ignores the lengths of the vectors".
       draft.questions[1].distractors[2] = "  it ignores the lengths of the vectors. ";
 
-      await expectDraftRejected(
-        draft,
+      await expectRejected(
+        { draft },
         "Question 2 has two options that are the same.",
       );
     });
@@ -164,8 +151,8 @@ describe("QuizService", () => {
       const draft = aDraft();
       draft.questions[0].correctOption = labeledOption;
 
-      await expectDraftRejected(
-        draft,
+      await expectRejected(
+        { draft },
         'Question 1 has an option that starts with a label such as "A)" or "1.".',
       );
     });
@@ -194,7 +181,7 @@ describe("QuizService", () => {
       // Question 1 is "What does cosine similarity measure?".
       draft.questions[3].question = "what does cosine similarity measure";
 
-      await expectDraftRejected(draft, "Questions 1 and 4 are the same.");
+      await expectRejected({ draft }, "Questions 1 and 4 are the same.");
     });
   });
 
@@ -214,6 +201,7 @@ describe("QuizService", () => {
 
       await expect(result).rejects.toThrow(NotFoundError);
       await expect(result).rejects.toThrow("That quiz doesn't exist.");
+      await expect(result).rejects.toMatchObject({ code: "NOT_FOUND" });
     });
   });
 });

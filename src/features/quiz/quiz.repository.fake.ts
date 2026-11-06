@@ -11,28 +11,22 @@ export class QuizRepositoryFake implements QuizRepositoryInterface {
     return structuredClone(this.quizzes);
   }
 
-  async create(quiz: NewQuiz): Promise<Quiz> {
+  async create({ questions, excerpts, ...quiz }: NewQuiz): Promise<Quiz> {
     const saved: Quiz = {
+      ...quiz,
       id: this.nextId("quiz"),
-      topic: quiz.topic,
-      ungrounded: quiz.ungrounded,
       createdAt: new Date(),
-      questions: quiz.questions.map((question) => ({
+      questions: questions.map(({ options, ...question }) => ({
+        ...question,
         id: this.nextId("question"),
-        text: question.text,
-        explanation: question.explanation,
-        options: question.options.map((option) => ({
+        options: options.map((option) => ({
+          ...option,
           id: this.nextId("option"),
-          text: option.text,
-          isCorrect: option.isCorrect,
         })),
       })),
-      excerpts: quiz.excerpts.map((excerpt) => ({
+      excerpts: excerpts.map((excerpt) => ({
+        ...excerpt,
         id: this.nextId("excerpt"),
-        chunkId: excerpt.chunkId,
-        sourceTitle: excerpt.sourceTitle,
-        text: excerpt.text,
-        similarity: excerpt.similarity,
       })),
     };
     this.quizzes.push(saved);

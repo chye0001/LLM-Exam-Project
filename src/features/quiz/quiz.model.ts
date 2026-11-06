@@ -110,31 +110,24 @@ export type Excerpt = {
   similarity: number;
 };
 
-/** A quiz to save. The repository stores each item's position from its place in the array. */
-export type NewQuiz = {
-  topic: string;
-  ungrounded: boolean;
+/**
+ * A quiz to save: a Quiz without the ids and the date the repository assigns.
+ * The repository stores each item's position from its place in the array.
+ */
+export type NewQuiz = Omit<Quiz, "id" | "createdAt" | "questions" | "excerpts"> & {
   questions: NewQuestion[];
   excerpts: NewExcerpt[];
 };
 
-export type NewQuestion = {
-  text: string;
-  explanation: string;
+export type NewQuestion = Omit<Question, "id" | "options"> & {
   options: NewOption[];
 };
 
-export type NewOption = {
-  text: string;
-  isCorrect: boolean;
-};
+export type NewOption = Omit<Option, "id">;
 
-export type NewExcerpt = {
-  chunkId: string;
-  sourceTitle: string;
-  text: string;
-  similarity: number;
-};
+export type NewExcerpt = Omit<Excerpt, "id">;
+
+export const QUIZ_NOT_FOUND_MESSAGE = "That quiz doesn't exist.";
 
 export type CreateQuizInput = {
   topic: string;

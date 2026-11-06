@@ -1,4 +1,5 @@
 import {
+  QUIZ_NOT_FOUND_MESSAGE,
   quizDraftSchema,
   type CreateQuizInput,
   type Quiz,
@@ -24,12 +25,12 @@ export class QuizService implements QuizServiceInterface {
     return this.quizRepository.create({
       topic,
       ungrounded,
-      questions: draftCheck.data.questions.map((question) => ({
-        text: question.question,
-        explanation: question.explanation,
+      questions: draftCheck.data.questions.map((draftQuestion) => ({
+        text: draftQuestion.question,
+        explanation: draftQuestion.explanation,
         options: shuffle([
-          { text: question.correctOption, isCorrect: true },
-          ...question.distractors.map((text) => ({ text, isCorrect: false })),
+          { text: draftQuestion.correctOption, isCorrect: true },
+          ...draftQuestion.distractors.map((text) => ({ text, isCorrect: false })),
         ]),
       })),
       excerpts,
@@ -39,7 +40,7 @@ export class QuizService implements QuizServiceInterface {
   async getQuiz(id: string): Promise<Quiz> {
     const quiz = await this.quizRepository.findById(id);
     if (!quiz) {
-      throw new NotFoundError();
+      throw new NotFoundError(QUIZ_NOT_FOUND_MESSAGE);
     }
     return quiz;
   }
