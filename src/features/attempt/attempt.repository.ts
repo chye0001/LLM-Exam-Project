@@ -23,12 +23,12 @@ export class AttemptRepository implements AttemptRepositoryInterface {
       where: { quizId: { in: quizIds } },
       _max: { score: true },
     });
-    const bestScores = new Map<string, number>();
+    const bestScoreByQuizId = new Map<string, number>();
     for (const group of groups) {
       if (group._max.score !== null) {
-        bestScores.set(group.quizId, group._max.score);
+        bestScoreByQuizId.set(group.quizId, group._max.score);
       }
     }
-    return bestScores;
+    return bestScoreByQuizId;
   }
 }

@@ -3,12 +3,14 @@ import Link from "next/link";
 import type { QuizSummary } from "@/features/quiz/quiz.model";
 
 /** A row in the quiz list: a saved quiz and the student's best score, or null if nobody has taken it. */
-export type QuizListItem = QuizSummary & { bestScore: number | null };
+type QuizListItem = QuizSummary & { bestScore: number | null };
 
 const dateFormat = new Intl.DateTimeFormat("en-GB", {
   day: "numeric",
   month: "short",
   year: "numeric",
+  // The server renders the date, so pin the students' time zone instead of the server's.
+  timeZone: "Europe/Copenhagen",
 });
 
 /** The saved quizzes in the order given. Each row opens its quiz. */

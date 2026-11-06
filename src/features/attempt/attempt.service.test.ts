@@ -7,12 +7,13 @@ import type { AttemptServiceInterface } from "@/features/attempt/attempt.service
 import type { Quiz, QuizDraft } from "@/features/quiz/quiz.model";
 import { QuizRepositoryFake } from "@/features/quiz/quiz.repository.fake";
 import { QuizService } from "@/features/quiz/quiz.service";
+import type { QuizServiceInterface } from "@/features/quiz/quiz.service.interface";
 import { NotFoundError, ValidationError } from "@/shared/errors";
 
 describe("AttemptService", () => {
   let attemptRepository: AttemptRepositoryFake;
   let attemptService: AttemptServiceInterface;
-  let quizService: QuizService;
+  let quizService: QuizServiceInterface;
   let quiz: Quiz;
 
   beforeEach(async () => {
@@ -136,9 +137,9 @@ describe("AttemptService", () => {
       await submitWithScore(quiz, 4);
       await submitWithScore(quiz, 3);
 
-      const bestScores = await attemptService.getBestScores([quiz.id]);
+      const bestScoreByQuizId = await attemptService.getBestScores([quiz.id]);
 
-      expect(bestScores).toEqual(new Map([[quiz.id, 4]]));
+      expect(bestScoreByQuizId).toEqual(new Map([[quiz.id, 4]]));
     });
 
     it("leaves out a quiz without attempts, even one next to a quiz scored zero", async () => {
@@ -150,10 +151,10 @@ describe("AttemptService", () => {
       });
       await submitWithScore(quiz, 0);
 
-      const bestScores = await attemptService.getBestScores([quiz.id, untakenQuiz.id]);
+      const bestScoreByQuizId = await attemptService.getBestScores([quiz.id, untakenQuiz.id]);
 
-      expect(bestScores).toEqual(new Map([[quiz.id, 0]]));
-      expect(bestScores.has(untakenQuiz.id)).toBe(false);
+      expect(bestScoreByQuizId).toEqual(new Map([[quiz.id, 0]]));
+      expect(bestScoreByQuizId.has(untakenQuiz.id)).toBe(false);
     });
   });
 });

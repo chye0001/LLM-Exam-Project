@@ -43,7 +43,7 @@ async function SavedQuizzes() {
   // Reads the database on every request instead of at build time.
   await connection();
   const quizzes = await quizService.listQuizzes();
-  const bestScores = await attemptService.getBestScores(
+  const bestScoreByQuizId = await attemptService.getBestScores(
     quizzes.map((quiz) => quiz.id),
   );
 
@@ -51,7 +51,7 @@ async function SavedQuizzes() {
     <QuizList
       quizzes={quizzes.map((quiz) => ({
         ...quiz,
-        bestScore: bestScores.get(quiz.id) ?? null,
+        bestScore: bestScoreByQuizId.get(quiz.id) ?? null,
       }))}
     />
   );
