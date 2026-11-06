@@ -1,4 +1,4 @@
-import type { LlmClientInterface } from "@/features/generation/llm-client.interface";
+import type { LlmClientInterface } from "@/features/generation/generation.llm-client.interface";
 
 /**
  * Returns the replies a test queues, in order. It fails loudly when it is

@@ -3,7 +3,7 @@ import { beforeEach, describe, expect, it } from "vitest";
 import { DEFAULT_GENERATION_CONFIG } from "@/features/generation/generation.config";
 import { GenerationService } from "@/features/generation/generation.service";
 import type { GenerationServiceInterface } from "@/features/generation/generation.service.interface";
-import { LlmClientFake } from "@/features/generation/llm-client.fake";
+import { LlmClientFake } from "@/features/generation/generation.llm-client.fake";
 import type { QuizDraft } from "@/features/quiz/quiz.model";
 import { QuizRepositoryFake } from "@/features/quiz/quiz.repository.fake";
 import { QuizService } from "@/features/quiz/quiz.service";

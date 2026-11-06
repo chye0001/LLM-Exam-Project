@@ -7,7 +7,7 @@ import {
 } from "@/features/generation/generation.model";
 import { buildGroundedPrompt } from "@/features/generation/generation.prompt";
 import type { GenerationServiceInterface } from "@/features/generation/generation.service.interface";
-import type { LlmClientInterface } from "@/features/generation/llm-client.interface";
+import type { LlmClientInterface } from "@/features/generation/generation.llm-client.interface";
 import {
   quizDraftSchema,
   type Quiz,

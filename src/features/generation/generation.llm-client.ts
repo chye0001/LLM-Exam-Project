@@ -2,7 +2,7 @@ import type { GenerationConfig } from "@/features/generation/generation.config";
 import type {
   ChatRequest,
   LlmClientInterface,
-} from "@/features/generation/llm-client.interface";
+} from "@/features/generation/generation.llm-client.interface";
 
 type OllamaChatResponse = {
   message?: { content?: string };
