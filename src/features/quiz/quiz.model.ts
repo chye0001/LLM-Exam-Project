@@ -4,10 +4,11 @@ const QUESTIONS_PER_QUIZ = 5;
 const DISTRACTORS_PER_QUESTION = 3;
 
 /**
- * Labels such as "A)", "(b)", "1." or "C:" at the start of an option.
- * "." and ":" only count when a space follows, so "1.5 times" is not a label.
+ * Labels such as "A)", "(b)", "1." or "C:" at the start of an option. "." and
+ * ":" only count when a space or a word follows, so "1.The" is a label, but
+ * "1.5 times" and "A.I. models" are not.
  */
-const OPTION_LABEL = /^(?:\(?[a-d1-4]\)|[a-d1-4][.:](?=\s))/i;
+const OPTION_LABEL = /^(?:\(?[a-d1-4]\)|[a-d1-4][.:](?=\s|\p{L}{2}))/iu;
 
 const draftText = z
   .string()

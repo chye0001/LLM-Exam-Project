@@ -147,6 +147,7 @@ describe("QuizService", () => {
       "(b) The angle between two vectors",
       "1. The angle between two vectors",
       "C: The angle between two vectors",
+      "1.The angle between two vectors",
     ])("rejects the labeled option %j", async (labeledOption) => {
       const draft = aDraft();
       draft.questions[0].correctOption = labeledOption;
@@ -162,7 +163,7 @@ describe("QuizService", () => {
       draft.questions[0].distractors = [
         "A vector of 768 numbers",
         "1.5 times the length of a vector",
-        "4 dimensions out of 768",
+        "A.I. models compare them",
       ];
 
       const quiz = await quizService.createQuiz(aQuizInput({ draft }));
@@ -171,7 +172,7 @@ describe("QuizService", () => {
         expect.arrayContaining([
           "A vector of 768 numbers",
           "1.5 times the length of a vector",
-          "4 dimensions out of 768",
+          "A.I. models compare them",
         ]),
       );
     });
@@ -182,6 +183,29 @@ describe("QuizService", () => {
       draft.questions[3].question = "what does cosine similarity measure";
 
       await expectRejected({ draft }, "Questions 1 and 4 are the same.");
+    });
+
+    it("rejects an ungrounded quiz that has excerpts", async () => {
+      await expectRejected(
+        { ungrounded: true, excerpts: someExcerpts() },
+        "An ungrounded quiz can't have excerpts.",
+      );
+    });
+
+    it("rejects a quiz without excerpts unless it is ungrounded", async () => {
+      await expectRejected(
+        { ungrounded: false, excerpts: [] },
+        "A quiz needs at least one excerpt unless it is ungrounded.",
+      );
+    });
+
+    it("saves an ungrounded quiz without excerpts", async () => {
+      const quiz = await quizService.createQuiz(
+        aQuizInput({ ungrounded: true, excerpts: [] }),
+      );
+
+      expect(quiz.ungrounded).toBe(true);
+      expect(quiz.excerpts).toEqual([]);
     });
   });
 

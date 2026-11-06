@@ -21,6 +21,14 @@ export class QuizService implements QuizServiceInterface {
     if (!draftCheck.success) {
       throw new ValidationError(draftCheck.error.issues[0].message);
     }
+    if (ungrounded && excerpts.length > 0) {
+      throw new ValidationError("An ungrounded quiz can't have excerpts.");
+    }
+    if (!ungrounded && excerpts.length === 0) {
+      throw new ValidationError(
+        "A quiz needs at least one excerpt unless it is ungrounded.",
+      );
+    }
 
     return this.quizRepository.create({
       topic,
