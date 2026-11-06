@@ -5,8 +5,9 @@ import type { Chunk } from "@/features/retrieval/retrieval.model";
 // message, and the Task goes in the user message, followed by the chunks.
 //
 // The ungrounded variant is only used when retrieval is skipped in demo mode.
-// It drops everything that refers to the material or the chunks, as the spec
-// lists it: the second sentence of Traits, the chunk rules and the chunks.
+// It drops everything that refers to the material or the chunks: the second
+// sentence of Traits, "the material" in Target and the distractors line, the
+// chunk rules and the chunks.
 
 const TRAITS_FIRST_SENTENCE =
   "You are an experienced teacher who writes fair exam questions.";
@@ -15,8 +16,9 @@ const TRAITS = `${TRAITS_FIRST_SENTENCE} You use only the material you are given
 
 const TONE = "Write in plain, neutral and concise English.";
 
-function target(topic: string): string {
-  return `Your readers are students revising ${topic} for an exam. Test whether they understand the ideas in the material, not whether they remember names and numbers.`;
+/** `ideas` is what the questions test: "the ideas in the material", or just "the ideas" without retrieval. */
+function target(topic: string, ideas: string): string {
+  return `Your readers are students revising ${topic} for an exam. Test whether they understand ${ideas}, not whether they remember names and numbers.`;
 }
 
 function groundedTask(topic: string, questionCount: number): string {
@@ -42,7 +44,7 @@ function ungroundedTask(topic: string, questionCount: number): string {
 For each question, write:
 - question: the question itself
 - correctOption: the one correct option
-- distractors: three wrong options that sound plausible to someone who skimmed the material
+- distractors: three wrong options that sound plausible to someone who only skimmed the topic
 - explanation: one sentence on why the correct option is right
 
 Rules:
@@ -73,7 +75,7 @@ export function buildGroundedPrompt({
   questionCount,
 }: GroundedPromptInput): [ChatMessage, ChatMessage] {
   return [
-    { role: "system", content: [TRAITS, TONE, target(topic)].join("\n\n") },
+    { role: "system", content: [TRAITS, TONE, target(topic, "the ideas in the material")].join("\n\n") },
     {
       role: "user",
       content: [groundedTask(topic, questionCount), chunksSection(chunks)].join("\n\n"),
@@ -98,7 +100,7 @@ export function buildUngroundedPrompt({
   return [
     {
       role: "system",
-      content: [TRAITS_FIRST_SENTENCE, TONE, target(topic)].join("\n\n"),
+      content: [TRAITS_FIRST_SENTENCE, TONE, target(topic, "the ideas")].join("\n\n"),
     },
     { role: "user", content: ungroundedTask(topic, questionCount) },
   ];

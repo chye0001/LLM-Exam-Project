@@ -71,9 +71,10 @@ describe("buildUngroundedPrompt", () => {
       content: [
         "You are an experienced teacher who writes fair exam questions.",
         "Write in plain, neutral and concise English.",
-        "Your readers are students revising Embeddings for an exam. Test whether they understand the ideas in the material, not whether they remember names and numbers.",
+        "Your readers are students revising Embeddings for an exam. Test whether they understand the ideas, not whether they remember names and numbers.",
       ].join("\n\n"),
     });
+    expect(systemMessage.content.toLowerCase()).not.toContain("material");
   });
 
   it("puts the Task without chunk rules and without chunks in the user message", () => {
@@ -89,7 +90,7 @@ describe("buildUngroundedPrompt", () => {
 For each question, write:
 - question: the question itself
 - correctOption: the one correct option
-- distractors: three wrong options that sound plausible to someone who skimmed the material
+- distractors: three wrong options that sound plausible to someone who only skimmed the topic
 - explanation: one sentence on why the correct option is right
 
 Rules:
@@ -99,6 +100,7 @@ Rules:
 - Respond with JSON only.`,
     });
     expect(userMessage.content.toLowerCase()).not.toContain("chunk");
+    expect(userMessage.content.toLowerCase()).not.toContain("material");
   });
 });
 
