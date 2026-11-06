@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 
-import { QuizOverview } from "@/components/quiz-overview";
+import { QuizAttempt } from "@/components/quiz-attempt";
 import { quizService } from "@/shared/dependency-container";
 import { NotFoundError } from "@/shared/errors";
 
@@ -10,7 +10,7 @@ export default async function QuizPage({
   const { id } = await params;
   const quiz = await getQuizOrShowNotFound(id);
 
-  return <QuizOverview quiz={quiz} />;
+  return <QuizAttempt quiz={quiz} />;
 }
 
 async function getQuizOrShowNotFound(id: string) {
