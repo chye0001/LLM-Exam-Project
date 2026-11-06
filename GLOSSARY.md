@@ -43,6 +43,10 @@ A quiz draft that passed validation and was saved, ready to be taken.
 A quiz generated with retrieval skipped, so it has no excerpts. Only demo mode can make one, to show what retrieval changes.
 _Avoid_: quiz without RAG, plain quiz
 
+**Demo mode**:
+A setting, turned on with `DEMO_MODE=true`, that lets the student skip retrieval so the group can show the same topic with and without sources.
+_Avoid_: debug mode, test mode
+
 **Question**:
 One multiple-choice item in a quiz, with four options and an explanation.
 

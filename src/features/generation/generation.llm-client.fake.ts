@@ -1,4 +1,7 @@
-import type { LlmClientInterface } from "@/features/generation/generation.llm-client.interface";
+import type {
+  ChatRequest,
+  LlmClientInterface,
+} from "@/features/generation/generation.llm-client.interface";
 import { ModelTimeoutError, ModelUnavailableError } from "@/shared/errors";
 
 /** What the fake does on one call: return a reply text or throw. */
@@ -14,6 +17,8 @@ type QueuedReply =
  */
 export class LlmClientFake implements LlmClientInterface {
   private readonly replies: QueuedReply[] = [];
+  /** Every request the fake received, in order. */
+  readonly requests: ChatRequest[] = [];
 
   queueReply(text: string): void {
     this.replies.push({ kind: "reply", text });
@@ -29,7 +34,8 @@ export class LlmClientFake implements LlmClientInterface {
     this.replies.push({ kind: "unavailable" });
   }
 
-  async chat(): Promise<string> {
+  async chat(request: ChatRequest): Promise<string> {
+    this.requests.push(request);
     const reply = this.replies.shift();
     if (reply === undefined) {
       throw new Error("LlmClientFake was called with no reply queued.");

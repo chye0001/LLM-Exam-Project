@@ -11,6 +11,8 @@ export const topicSchema = z
 
 export type GenerateQuizInput = {
   topic: string;
+  /** Writes the quiz without retrieval. Only allowed in demo mode. */
+  skipRetrieval?: boolean;
 };
 
 /** One message in a chat with the model. The roles are the chat API's. */

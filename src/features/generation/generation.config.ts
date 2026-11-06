@@ -13,6 +13,8 @@ export type GenerationConfig = {
   timeoutMs: number;
   /** How many times the model may try to write a valid quiz draft. */
   tries: number;
+  /** Lets the student skip retrieval, so the group can show what retrieval changes. */
+  demoMode: boolean;
 };
 
 /** Every generation default, in one place. */
@@ -30,9 +32,13 @@ export const DEFAULT_GENERATION_CONFIG: GenerationConfig = {
   },
   timeoutMs: 3 * 60 * 1000,
   tries: 3,
+  demoMode: false,
 };
 
-/** The defaults, with the model and the Ollama URL taken from `OLLAMA_MODEL` and `OLLAMA_BASE_URL` when they are set. */
+/**
+ * The defaults, with the model and the Ollama URL taken from `OLLAMA_MODEL`
+ * and `OLLAMA_BASE_URL` when they are set. `DEMO_MODE=true` turns on demo mode.
+ */
 export function loadGenerationConfig(
   env: NodeJS.ProcessEnv = process.env,
 ): GenerationConfig {
@@ -40,5 +46,6 @@ export function loadGenerationConfig(
     ...DEFAULT_GENERATION_CONFIG,
     model: env.OLLAMA_MODEL || DEFAULT_GENERATION_CONFIG.model,
     ollamaBaseUrl: env.OLLAMA_BASE_URL || DEFAULT_GENERATION_CONFIG.ollamaBaseUrl,
+    demoMode: env.DEMO_MODE === "true",
   };
 }

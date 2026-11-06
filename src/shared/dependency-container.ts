@@ -21,6 +21,9 @@ import { prisma } from "@/shared/db/prisma";
 
 const generationConfig = loadGenerationConfig();
 
+/** Whether `DEMO_MODE=true` lets the student skip retrieval. */
+export const demoMode = generationConfig.demoMode;
+
 const quizRepository: QuizRepositoryInterface = new QuizRepository(prisma);
 
 const attemptRepository: AttemptRepositoryInterface = new AttemptRepository(prisma);

@@ -80,6 +80,7 @@ export function QuizAttempt({
   return (
     <QuizQuestion
       topic={quiz.topic}
+      ungrounded={quiz.ungrounded}
       question={question}
       questionNumber={questionIndex + 1}
       questionCount={quiz.questions.length}

@@ -9,14 +9,17 @@ import { TextField } from "@/components/ui/text-field";
 import type { ActionResult } from "@/shared/safe-action";
 
 /**
- * The topic field and the "Create quiz" button. While the model writes the
+ * The topic field and the "Create quiz" button, plus the "Skip retrieval"
+ * checkbox in demo mode. While the model writes the
  * quiz, the form is locked. On success it opens the new quiz, and on failure
  * it shows the error under the field.
  */
 export function CreateQuizForm({
   generateQuiz,
+  demoMode,
 }: {
   generateQuiz: (formData: FormData) => Promise<ActionResult<{ quizId: string }>>;
+  demoMode: boolean;
 }) {
   const router = useRouter();
   const [isWriting, startWriting] = useTransition();
@@ -47,6 +50,17 @@ export function CreateQuizForm({
         disabled={isWriting}
         error={error}
       />
+      {demoMode && (
+        <label className="flex items-center gap-2 text-sm">
+          <input
+            type="checkbox"
+            name="skipRetrieval"
+            disabled={isWriting}
+            className="accent-accent"
+          />
+          Skip retrieval
+        </label>
+      )}
       <div className="flex flex-wrap items-center gap-4">
         <Button type="submit" disabled={isWriting}>
           {isWriting ? (

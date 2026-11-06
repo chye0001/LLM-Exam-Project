@@ -1,6 +1,9 @@
 import { describe, expect, it } from "vitest";
 
-import { buildGroundedPrompt } from "@/features/generation/generation.prompt";
+import {
+  buildGroundedPrompt,
+  buildUngroundedPrompt,
+} from "@/features/generation/generation.prompt";
 import type { Chunk } from "@/features/retrieval/retrieval.model";
 
 describe("buildGroundedPrompt", () => {
@@ -53,6 +56,51 @@ An embedding is a list of numbers, a vector, that represents a piece of text.
 [2] (from "Building a RAG pipeline")
 Some systems also apply a similarity threshold.`,
     });
+  });
+});
+
+describe("buildUngroundedPrompt", () => {
+  it("keeps only the first sentence of Traits, followed by Tone and Target", () => {
+    const [systemMessage] = buildUngroundedPrompt({
+      topic: "Embeddings",
+      questionCount: 5,
+    });
+
+    expect(systemMessage).toEqual({
+      role: "system",
+      content: [
+        "You are an experienced teacher who writes fair exam questions.",
+        "Write in plain, neutral and concise English.",
+        "Your readers are students revising Embeddings for an exam. Test whether they understand the ideas, not whether they remember names and numbers.",
+      ].join("\n\n"),
+    });
+    expect(systemMessage.content.toLowerCase()).not.toContain("material");
+  });
+
+  it("puts the Task without chunk rules and without chunks in the user message", () => {
+    const [, userMessage] = buildUngroundedPrompt({
+      topic: "Embeddings",
+      questionCount: 5,
+    });
+
+    expect(userMessage).toEqual({
+      role: "user",
+      content: `Write 5 multiple-choice questions about "Embeddings".
+
+For each question, write:
+- question: the question itself
+- correctOption: the one correct option
+- distractors: three wrong options that sound plausible to someone who only skimmed the topic
+- explanation: one sentence on why the correct option is right
+
+Rules:
+- Exactly one option may be correct.
+- Questions may be tricky, for example "Which of these is NOT ..." or distractors that are almost right.
+- Write options as short phrases, with no letters or numbers in front.
+- Respond with JSON only.`,
+    });
+    expect(userMessage.content.toLowerCase()).not.toContain("chunk");
+    expect(userMessage.content.toLowerCase()).not.toContain("material");
   });
 });
 
