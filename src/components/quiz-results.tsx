@@ -8,21 +8,21 @@ import type { Quiz } from "@/features/quiz/quiz.model";
  */
 export function QuizResults({
   quiz,
-  chosenOptionIds,
+  answerIds,
   onRetake,
 }: {
   quiz: Quiz;
-  chosenOptionIds: string[];
+  answerIds: string[];
   onRetake: () => void;
 }) {
   const review = quiz.questions.map((question, index) => {
     const correctOption = question.options.find((option) => option.isCorrect);
-    const chosenOption = question.options.find(
-      (option) => option.id === chosenOptionIds[index],
+    const answer = question.options.find(
+      (option) => option.id === answerIds[index],
     );
-    return { question, correctOption, chosenOption };
+    return { question, correctOption, answer };
   });
-  const score = review.filter(({ chosenOption }) => chosenOption?.isCorrect).length;
+  const score = review.filter(({ answer }) => answer?.isCorrect).length;
 
   return (
     <article>
@@ -41,7 +41,7 @@ export function QuizResults({
       <section className="mt-12">
         <h2 className="text-lg font-semibold">Review</h2>
         <ol className="mt-4 space-y-6">
-          {review.map(({ question, correctOption, chosenOption }, index) => (
+          {review.map(({ question, correctOption, answer }, index) => (
             <li key={question.id} className="border-t pt-6">
               <p className="font-medium">
                 <span className="text-muted">{index + 1}.</span> {question.text}
@@ -49,13 +49,13 @@ export function QuizResults({
               <dl className="mt-3 space-y-1 text-sm">
                 <div className="flex gap-2">
                   <dt className="text-muted">Your answer:</dt>
-                  <dd className={chosenOption?.isCorrect ? "text-accent" : ""}>
-                    {chosenOption?.text}
-                    {chosenOption?.isCorrect ? " (right)" : " (wrong)"}
+                  <dd className={answer?.isCorrect ? "text-accent" : ""}>
+                    {answer?.text}
+                    {answer?.isCorrect ? " (right)" : " (wrong)"}
                   </dd>
                 </div>
                 <div className="flex gap-2">
-                  <dt className="text-muted">Correct answer:</dt>
+                  <dt className="text-muted">Correct option:</dt>
                   <dd>{correctOption?.text}</dd>
                 </div>
               </dl>
@@ -65,7 +65,7 @@ export function QuizResults({
       </section>
 
       <section className="mt-12">
-        <h2 className="text-lg font-semibold">Sources</h2>
+        <h2 className="text-lg font-semibold">Excerpts</h2>
         <p className="mt-1 text-sm text-muted">
           The excerpts this quiz was written from, closest match first.
         </p>

@@ -16,7 +16,7 @@ export function QuizQuestion({
   question,
   questionNumber,
   questionCount,
-  chosenOptionId,
+  answerId,
   onChoose,
   onNext,
 }: {
@@ -24,19 +24,19 @@ export function QuizQuestion({
   question: Question;
   questionNumber: number;
   questionCount: number;
-  chosenOptionId: string | null;
+  answerId: string | null;
   onChoose: (optionId: string) => void;
   onNext: () => void;
 }) {
-  const isLocked = chosenOptionId !== null;
+  const isLocked = answerId !== null;
   const isLastQuestion = questionNumber === questionCount;
-  const chosenOption = question.options.find(
-    (option) => option.id === chosenOptionId,
-  );
+  const answer = question.options.find((option) => option.id === answerId);
 
   useEffect(() => {
     function handleKeyDown(event: KeyboardEvent) {
       if (event.ctrlKey || event.metaKey || event.altKey) return;
+      // Leaves Enter on a link, such as the header's, to the browser.
+      if (event.target instanceof Element && event.target.closest("a")) return;
 
       const option = question.options[Number(event.key) - 1];
       if (!isLocked && option) {
@@ -64,7 +64,7 @@ export function QuizQuestion({
 
       <ol className="mt-6 space-y-2">
         {question.options.map((option, optionIndex) => {
-          const isChosen = option.id === chosenOptionId;
+          const isChosen = option.id === answerId;
           return (
             <li key={option.id}>
               <button
@@ -77,7 +77,7 @@ export function QuizQuestion({
                 <span className="flex-1">{option.text}</span>
                 {isLocked && option.isCorrect && (
                   <span className="text-sm font-medium text-accent">
-                    Correct answer
+                    Correct option
                   </span>
                 )}
                 {isLocked && isChosen && !option.isCorrect && (
@@ -89,17 +89,18 @@ export function QuizQuestion({
         })}
       </ol>
 
-      {chosenOption && (
+      {answer && (
         <div className="mt-6 space-y-4">
           <p role="status" className="font-medium">
-            {chosenOption.isCorrect ? (
+            {answer.isCorrect ? (
               <span className="text-accent">Right.</span>
             ) : (
               "Not quite."
             )}
           </p>
           <p className="text-muted">{question.explanation}</p>
-          <Button type="button" onClick={onNext}>
+          {/* Focus moves here, because the picked option is now disabled. */}
+          <Button type="button" onClick={onNext} autoFocus>
             {isLastQuestion ? "See results" : "Next"}
           </Button>
           <p className="text-sm text-muted">Press Enter to continue.</p>

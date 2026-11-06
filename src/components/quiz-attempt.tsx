@@ -10,33 +10,37 @@ import type { Quiz } from "@/features/quiz/quiz.model";
  * Runs a quiz in the browser: one question per screen, then the results.
  * The quiz arrives with its correct options, so no step makes a server call.
  */
-export function QuizPlayer({ quiz }: { quiz: Quiz }) {
-  const [chosenOptionIds, setChosenOptionIds] = useState<string[]>([]);
+export function QuizAttempt({ quiz }: { quiz: Quiz }) {
+  // The answer to each question, by its index.
+  const [answerIds, setAnswerIds] = useState<string[]>([]);
   const [questionIndex, setQuestionIndex] = useState(0);
 
   const isFinished = questionIndex >= quiz.questions.length;
 
   function choose(optionId: string) {
-    setChosenOptionIds((ids) => [...ids, optionId]);
+    // The first answer to a question locks it.
+    setAnswerIds((ids) => {
+      if (ids[questionIndex]) return ids;
+      const answered = [...ids];
+      answered[questionIndex] = optionId;
+      return answered;
+    });
   }
 
   function next() {
     setQuestionIndex((index) => index + 1);
+    window.scrollTo(0, 0);
   }
 
   function retake() {
-    setChosenOptionIds([]);
+    setAnswerIds([]);
     setQuestionIndex(0);
     window.scrollTo(0, 0);
   }
 
   if (isFinished) {
     return (
-      <QuizResults
-        quiz={quiz}
-        chosenOptionIds={chosenOptionIds}
-        onRetake={retake}
-      />
+      <QuizResults quiz={quiz} answerIds={answerIds} onRetake={retake} />
     );
   }
 
@@ -46,7 +50,7 @@ export function QuizPlayer({ quiz }: { quiz: Quiz }) {
       question={quiz.questions[questionIndex]}
       questionNumber={questionIndex + 1}
       questionCount={quiz.questions.length}
-      chosenOptionId={chosenOptionIds[questionIndex] ?? null}
+      answerId={answerIds[questionIndex] ?? null}
       onChoose={choose}
       onNext={next}
     />
