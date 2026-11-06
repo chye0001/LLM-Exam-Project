@@ -107,7 +107,7 @@ describe("QuizService", () => {
     it.each([
       {
         field: "question",
-        blankOut: (draft: QuizDraft) => (draft.questions[2].question = "  "),
+        blankOut: (draft: QuizDraft) => (draft.questions[2].text = "  "),
       },
       {
         field: "correct option",
@@ -180,7 +180,7 @@ describe("QuizService", () => {
     it("rejects a draft with two questions that are the same", async () => {
       const draft = aDraft();
       // Question 1 is "What does cosine similarity measure?".
-      draft.questions[3].question = "what does cosine similarity measure";
+      draft.questions[3].text = "what does cosine similarity measure";
 
       await expectRejected({ draft }, "Questions 1 and 4 are the same.");
     });
@@ -272,7 +272,7 @@ function aDraft(): QuizDraft {
   return {
     questions: [
       {
-        question: "What does cosine similarity measure?",
+        text: "What does cosine similarity measure?",
         correctOption: "The angle between two vectors",
         distractors: [
           "The distance between two points",
@@ -282,7 +282,7 @@ function aDraft(): QuizDraft {
         explanation: "Cosine similarity measures the angle and ignores the length.",
       },
       {
-        question: "Which of these is NOT true of the dot product?",
+        text: "Which of these is NOT true of the dot product?",
         correctOption: "It ignores the lengths of the vectors",
         distractors: [
           "It multiplies matching dimensions",
@@ -292,7 +292,7 @@ function aDraft(): QuizDraft {
         explanation: "The dot product depends on both the angle and the lengths.",
       },
       {
-        question: "Why do many systems normalize embeddings?",
+        text: "Why do many systems normalize embeddings?",
         correctOption: "So the cheaper dot product ranks like cosine",
         distractors: [
           "So embeddings get more dimensions",
@@ -302,7 +302,7 @@ function aDraft(): QuizDraft {
         explanation: "For vectors of length 1, both measures give the same ranking.",
       },
       {
-        question: "What does a similarity threshold do?",
+        text: "What does a similarity threshold do?",
         correctOption: "It drops chunks that match too weakly",
         distractors: [
           "It keeps exactly the top k chunks",
@@ -312,7 +312,7 @@ function aDraft(): QuizDraft {
         explanation: "Chunks below the threshold are dropped.",
       },
       {
-        question: "What can happen when the right chunk isn't retrieved?",
+        text: "What can happen when the right chunk isn't retrieved?",
         correctOption: "The model falls back on its training data",
         distractors: [
           "The model always answers correctly",

@@ -7,7 +7,7 @@ import type {
 export interface QuizServiceInterface {
   /**
    * Re-checks the draft, shuffles each question's four options and saves the
-   * quiz with its topic as its title. Throws `ValidationError` for an invalid draft.
+   * quiz under its topic. Throws `ValidationError` for an invalid draft.
    */
   createQuiz(input: CreateQuizInput): Promise<Quiz>;
 

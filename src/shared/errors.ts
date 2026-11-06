@@ -13,7 +13,13 @@ export class ValidationError extends AppError {
   readonly code = "VALIDATION_ERROR";
 }
 
-/** What the student asked for doesn't exist. The message says what is missing. */
+export const QUIZ_NOT_FOUND_MESSAGE = "That quiz doesn't exist.";
+
+/** The quiz the student asked for doesn't exist. */
 export class NotFoundError extends AppError {
   readonly code = "NOT_FOUND";
+
+  constructor() {
+    super(QUIZ_NOT_FOUND_MESSAGE);
+  }
 }

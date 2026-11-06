@@ -16,7 +16,7 @@ const draftText = z
   .min(1, "Questions, options and explanations can't be empty.");
 
 const questionDraftSchema = z.object({
-  question: draftText,
+  text: draftText,
   correctOption: draftText,
   distractors: z
     .array(draftText)
@@ -41,7 +41,7 @@ export const quizDraftSchema = z
     const firstNumberByQuestion = new Map<string, number>();
 
     draft.questions.forEach((question, index) => {
-      const questionKey = normalizeForComparison(question.question);
+      const questionKey = normalizeForComparison(question.text);
       const firstNumber = firstNumberByQuestion.get(questionKey);
       if (firstNumber === undefined) {
         firstNumberByQuestion.set(questionKey, index + 1);
@@ -132,8 +132,6 @@ export type NewExcerpt = Omit<Excerpt, "id">;
 export type QuizSummary = Pick<Quiz, "id" | "topic" | "createdAt"> & {
   questionCount: number;
 };
-
-export const QUIZ_NOT_FOUND_MESSAGE = "That quiz doesn't exist.";
 
 export type CreateQuizInput = {
   topic: string;
