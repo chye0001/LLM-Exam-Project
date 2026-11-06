@@ -77,3 +77,6 @@ _Avoid_: response, selection, pick
 
 **Score**:
 How many of an attempt's answers were correct, out of the quiz's number of questions.
+
+**Best score**:
+The highest score among a quiz's attempts. A quiz without attempts has no best score, which is not the same as a best score of zero.

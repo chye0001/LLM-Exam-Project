@@ -54,4 +54,8 @@ export class AttemptService implements AttemptServiceInterface {
 
     return this.attemptRepository.create({ quizId, score, answers });
   }
+
+  async getBestScores(quizIds: string[]): Promise<Map<string, number>> {
+    return this.attemptRepository.findBestScores(quizIds);
+  }
 }

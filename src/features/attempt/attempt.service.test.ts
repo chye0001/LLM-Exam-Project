@@ -7,15 +7,17 @@ import type { AttemptServiceInterface } from "@/features/attempt/attempt.service
 import type { Quiz, QuizDraft } from "@/features/quiz/quiz.model";
 import { QuizRepositoryFake } from "@/features/quiz/quiz.repository.fake";
 import { QuizService } from "@/features/quiz/quiz.service";
+import type { QuizServiceInterface } from "@/features/quiz/quiz.service.interface";
 import { NotFoundError, ValidationError } from "@/shared/errors";
 
 describe("AttemptService", () => {
   let attemptRepository: AttemptRepositoryFake;
   let attemptService: AttemptServiceInterface;
+  let quizService: QuizServiceInterface;
   let quiz: Quiz;
 
   beforeEach(async () => {
-    const quizService = new QuizService(new QuizRepositoryFake());
+    quizService = new QuizService(new QuizRepositoryFake());
     attemptRepository = new AttemptRepositoryFake();
     attemptService = new AttemptService(attemptRepository, quizService);
     quiz = await quizService.createQuiz({
@@ -116,6 +118,43 @@ describe("AttemptService", () => {
 
       await expect(result).rejects.toThrow(NotFoundError);
       expect(attemptRepository.savedAttempts).toEqual([]);
+    });
+  });
+
+  describe("getting best scores", () => {
+    /** Submits an attempt that answers the first `score` questions right and the rest wrong. */
+    async function submitWithScore(quizToTake: Quiz, score: number) {
+      await attemptService.submitAttempt({
+        quizId: quizToTake.id,
+        answers: quizToTake.questions.map((_, index) =>
+          index < score ? correctAnswer(quizToTake, index) : wrongAnswer(quizToTake, index),
+        ),
+      });
+    }
+
+    it("returns a quiz's highest attempt score", async () => {
+      await submitWithScore(quiz, 2);
+      await submitWithScore(quiz, 4);
+      await submitWithScore(quiz, 3);
+
+      const bestScoreByQuizId = await attemptService.getBestScores([quiz.id]);
+
+      expect(bestScoreByQuizId).toEqual(new Map([[quiz.id, 4]]));
+    });
+
+    it("leaves out a quiz without attempts, even one next to a quiz scored zero", async () => {
+      const untakenQuiz = await quizService.createQuiz({
+        topic: "Vector stores",
+        draft: aDraft(),
+        excerpts: [],
+        ungrounded: true,
+      });
+      await submitWithScore(quiz, 0);
+
+      const bestScoreByQuizId = await attemptService.getBestScores([quiz.id, untakenQuiz.id]);
+
+      expect(bestScoreByQuizId).toEqual(new Map([[quiz.id, 0]]));
+      expect(bestScoreByQuizId.has(untakenQuiz.id)).toBe(false);
     });
   });
 });
