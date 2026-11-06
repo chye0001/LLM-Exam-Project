@@ -14,6 +14,7 @@ model Quiz {
   createdAt  DateTime   @default(now())
   questions  Question[]
   excerpts   Excerpt[]
+  attempts   Attempt[]
 }
 
 model Question {
@@ -24,6 +25,7 @@ model Question {
   text        String
   explanation String
   options     Option[]
+  answers     Answer[]
 
   @@unique([quizId, position])
 }
@@ -35,6 +37,7 @@ model Option {
   position   Int
   text       String
   isCorrect  Boolean
+  answers    Answer[]
 
   @@unique([questionId, position])
 }
@@ -50,4 +53,25 @@ model Excerpt {
   similarity  Float
 
   @@unique([quizId, position])
+}
+
+model Attempt {
+  id        String   @id @default(cuid())
+  quiz      Quiz     @relation(fields: [quizId], references: [id], onDelete: Cascade)
+  quizId    String
+  createdAt DateTime @default(now())
+  score     Int
+  answers   Answer[]
+}
+
+model Answer {
+  id         String   @id @default(cuid())
+  attempt    Attempt  @relation(fields: [attemptId], references: [id], onDelete: Cascade)
+  attemptId  String
+  question   Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  questionId String
+  option     Option   @relation(fields: [optionId], references: [id], onDelete: Cascade)
+  optionId   String
+
+  @@unique([attemptId, questionId])
 }
