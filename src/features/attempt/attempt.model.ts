@@ -25,5 +25,8 @@ export type Attempt = {
   answers: Answer[];
 };
 
+/** What the student learns about a saved attempt: the score the server computed. */
+export type SubmittedAttempt = Pick<Attempt, "score">;
+
 /** An attempt to save: an Attempt without the id and the date the repository assigns. */
 export type NewAttempt = Omit<Attempt, "id" | "createdAt">;

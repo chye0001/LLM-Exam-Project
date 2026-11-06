@@ -1,6 +1,9 @@
 "use server";
 
-import type { Answer } from "@/features/attempt/attempt.model";
+import type {
+  Answer,
+  SubmittedAttempt,
+} from "@/features/attempt/attempt.model";
 import { attemptService } from "@/shared/dependency-container";
 import { safeAction, type ActionResult } from "@/shared/safe-action";
 
@@ -8,7 +11,7 @@ import { safeAction, type ActionResult } from "@/shared/safe-action";
 export async function submitAttempt(
   quizId: string,
   answers: Answer[],
-): Promise<ActionResult<{ score: number }>> {
+): Promise<ActionResult<SubmittedAttempt>> {
   return safeAction(async () => {
     const attempt = await attemptService.submitAttempt({ quizId, answers });
     return { score: attempt.score };

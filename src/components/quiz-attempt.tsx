@@ -4,11 +4,14 @@ import { useState } from "react";
 
 import { QuizQuestion } from "@/components/quiz-question";
 import { QuizResults } from "@/components/quiz-results";
-import type { Answer } from "@/features/attempt/attempt.model";
+import type {
+  Answer,
+  SubmittedAttempt,
+} from "@/features/attempt/attempt.model";
 import type { Quiz } from "@/features/quiz/quiz.model";
 import type { ActionResult } from "@/shared/safe-action";
 
-export type SubmitAttemptResult = ActionResult<{ score: number }>;
+type SubmitAttemptResult = ActionResult<SubmittedAttempt>;
 
 const UNREACHABLE_SERVER: SubmitAttemptResult = {
   ok: false,

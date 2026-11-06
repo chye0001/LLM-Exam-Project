@@ -18,7 +18,7 @@ export class AttemptService implements AttemptServiceInterface {
     // The input comes from the browser, so its shape is checked too.
     const inputCheck = submitAttemptInputSchema.safeParse(input);
     if (!inputCheck.success) {
-      throw new ValidationError("Send one answer per question.");
+      throw new ValidationError("The answers must be a list of question and option ids.");
     }
     const { quizId, answers } = inputCheck.data;
 

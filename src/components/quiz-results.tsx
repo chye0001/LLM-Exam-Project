@@ -1,8 +1,9 @@
-import type { SubmitAttemptResult } from "@/components/quiz-attempt";
 import { Button } from "@/components/ui/button";
 import { PageHeading } from "@/components/ui/page-heading";
 import { Spinner } from "@/components/ui/spinner";
+import type { SubmittedAttempt } from "@/features/attempt/attempt.model";
 import type { Quiz } from "@/features/quiz/quiz.model";
+import type { ActionResult } from "@/shared/safe-action";
 
 /**
  * The end of a quiz: the score the server computed for the saved attempt, every question with the student's answer and
@@ -17,7 +18,7 @@ export function QuizResults({
   quiz: Quiz;
   answerIds: Record<string, string>;
   /** Null while the attempt is being saved. */
-  submitResult: SubmitAttemptResult | null;
+  submitResult: ActionResult<SubmittedAttempt> | null;
   onRetake: () => void;
 }) {
   const review = quiz.questions.map((question) => {
