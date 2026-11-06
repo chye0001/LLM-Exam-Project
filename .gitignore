@@ -47,3 +47,4 @@ next-env.d.ts
 /src/shared/db/data/*
 !/src/shared/db/data/.gitkeep
 /src/shared/db/generated/
+scripts/afk-issues.sh
