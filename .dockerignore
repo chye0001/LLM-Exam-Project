@@ -1,0 +1,13 @@
+# Keep the build context small and keep local data and secrets out of the image.
+.git
+.next
+node_modules
+.env*
+!.env.example
+.scratch
+.claude
+*.tsbuildinfo
+next-env.d.ts
+src/shared/db/data/*
+!src/shared/db/data/.gitkeep
+src/shared/db/generated

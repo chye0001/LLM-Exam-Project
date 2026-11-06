@@ -1,0 +1,50 @@
+# `docker compose up` runs the app, Ollama and a one-shot model pull.
+# Then open http://localhost:3000. See the README for the fallback that runs
+# only the app against a native Ollama.
+
+services:
+  app:
+    build: .
+    ports:
+      # APP_PORT changes the host port when 3000 is taken.
+      - "${APP_PORT:-3000}:3000"
+    environment:
+      # The pull service below downloads this same model.
+      OLLAMA_MODEL: &ollama-model ${OLLAMA_MODEL:-qwen3:1.7b}
+      # Not read from .env, where it points at a native Ollama on localhost.
+      OLLAMA_BASE_URL: http://ollama:11434
+      DEMO_MODE: ${DEMO_MODE:-false}
+      DATABASE_URL: file:./src/shared/db/data/quiz.db
+    volumes:
+      # Only the data folder, so the migrations in the image stay visible.
+      - quiz-data:/app/src/shared/db/data
+    extra_hosts:
+      # Lets the fallback reach a native Ollama on Linux too.
+      - "host.docker.internal:host-gateway"
+    depends_on:
+      ollama-pull:
+        condition: service_completed_successfully
+
+  ollama:
+    image: &ollama-image ollama/ollama:0.40.15
+    # No published port, so it can't clash with a native Ollama on 11434.
+    volumes:
+      - ollama-models:/root/.ollama
+    healthcheck:
+      test: ["CMD", "ollama", "list"]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+
+  ollama-pull:
+    image: *ollama-image
+    environment:
+      OLLAMA_HOST: http://ollama:11434
+    command: ["pull", *ollama-model]
+    depends_on:
+      ollama:
+        condition: service_healthy
+
+volumes:
+  quiz-data:
+  ollama-models:
