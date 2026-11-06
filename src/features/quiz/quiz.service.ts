@@ -16,15 +16,15 @@ export class QuizService implements QuizServiceInterface {
     excerpts,
     ungrounded,
   }: CreateQuizInput): Promise<Quiz> {
-    const checkedDraft = quizDraftSchema.safeParse(draft);
-    if (!checkedDraft.success) {
-      throw new ValidationError(checkedDraft.error.issues[0].message);
+    const draftCheck = quizDraftSchema.safeParse(draft);
+    if (!draftCheck.success) {
+      throw new ValidationError(draftCheck.error.issues[0].message);
     }
 
     return this.quizRepository.create({
       topic,
       ungrounded,
-      questions: checkedDraft.data.questions.map((question) => ({
+      questions: draftCheck.data.questions.map((question) => ({
         text: question.question,
         explanation: question.explanation,
         options: shuffle([

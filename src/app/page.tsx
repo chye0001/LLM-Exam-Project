@@ -1,12 +1,11 @@
+import { PageHeading } from "@/components/ui/page-heading";
+
 export default function HomePage() {
   return (
     <section className="space-y-3">
-      <h1 className="text-2xl font-semibold tracking-tight">
-        Revise with a quiz
-      </h1>
+      <PageHeading>Revise with a quiz</PageHeading>
       <p className="text-muted">
-        Name a topic, and a local model writes five questions from the course
-        material.
+        A local model writes five-question quizzes from the knowledge base.
       </p>
     </section>
   );

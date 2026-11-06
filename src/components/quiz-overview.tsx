@@ -1,10 +1,11 @@
+import { PageHeading } from "@/components/ui/page-heading";
 import type { Quiz } from "@/features/quiz/quiz.model";
 
 /** The whole quiz on one page, with each correct option marked and every explanation shown. */
 export function QuizOverview({ quiz }: { quiz: Quiz }) {
   return (
     <article>
-      <h1 className="text-2xl font-semibold tracking-tight">{quiz.topic}</h1>
+      <PageHeading>{quiz.topic}</PageHeading>
 
       <ol className="mt-10 space-y-12">
         {quiz.questions.map((question, questionIndex) => (

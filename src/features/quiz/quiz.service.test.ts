@@ -73,13 +73,13 @@ describe("QuizService", () => {
         const correctTexts = question.options
           .filter((option) => option.isCorrect)
           .map((option) => option.text);
-        const wrongTexts = question.options
+        const distractorTexts = question.options
           .filter((option) => !option.isCorrect)
           .map((option) => option.text);
 
         expect(question.options).toHaveLength(4);
         expect(correctTexts).toEqual([correctOption]);
-        expect(wrongTexts.sort()).toEqual([...distractors].sort());
+        expect(distractorTexts.sort()).toEqual([...distractors].sort());
       });
     });
 

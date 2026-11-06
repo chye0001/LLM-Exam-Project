@@ -1,5 +1,7 @@
 "use client";
 
+import { PageHeading } from "@/components/ui/page-heading";
+
 export default function ErrorPage({
   retry,
 }: {
@@ -8,9 +10,7 @@ export default function ErrorPage({
 }) {
   return (
     <section className="space-y-3">
-      <h1 className="text-2xl font-semibold tracking-tight">
-        Something went wrong
-      </h1>
+      <PageHeading>Something went wrong</PageHeading>
       <p className="text-muted">{"The page couldn't load. Try again."}</p>
       <button
         type="button"

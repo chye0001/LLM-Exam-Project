@@ -5,7 +5,7 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: "Quiz generator",
-  description: "Quizzes written by a local model from your course material.",
+  description: "Quizzes written by a local model from the knowledge base.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
