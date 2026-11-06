@@ -3,6 +3,7 @@ import { z } from "zod";
 import type { GenerationConfig } from "@/features/generation/generation.config";
 import {
   topicSchema,
+  type ChatMessage,
   type GenerateQuizInput,
 } from "@/features/generation/generation.model";
 import { buildGroundedPrompt } from "@/features/generation/generation.prompt";
@@ -16,6 +17,7 @@ import {
 import type { QuizServiceInterface } from "@/features/quiz/quiz.service.interface";
 import type { RetrievalServiceInterface } from "@/features/retrieval/retrieval.service.interface";
 import {
+  ModelTimeoutError,
   NoRelevantSourcesError,
   QuizGenerationError,
   ValidationError,
@@ -47,19 +49,17 @@ export class GenerationService implements GenerationServiceInterface {
       throw new NoRelevantSourcesError();
     }
 
-    const reply = await this.llmClient.chat({
-      messages: buildGroundedPrompt({
+    const draft = await this.writeDraft(
+      buildGroundedPrompt({
         topic,
         chunks,
         questionCount: this.config.questionsPerQuiz,
       }),
-      jsonSchema: QUIZ_DRAFT_JSON_SCHEMA,
-      sampling: this.config.sampling,
-    });
+    );
 
     return this.quizService.createQuiz({
       topic,
-      draft: parseQuizDraft(reply),
+      draft,
       excerpts: chunks.map((chunk) => ({
         chunkId: chunk.id,
         sourceTitle: chunk.sourceTitle,
@@ -68,6 +68,31 @@ export class GenerationService implements GenerationServiceInterface {
       })),
       ungrounded: false,
     });
+  }
+
+  /**
+   * Asks the model for a quiz draft, up to the configured number of tries. A
+   * try fails when the reply isn't a valid draft or the call times out. Any
+   * other error, such as `ModelUnavailableError`, ends generation at once.
+   */
+  private async writeDraft(messages: ChatMessage[]): Promise<QuizDraft> {
+    for (let tryNumber = 1; tryNumber <= this.config.tries; tryNumber++) {
+      try {
+        const reply = await this.llmClient.chat({
+          messages,
+          jsonSchema: QUIZ_DRAFT_JSON_SCHEMA,
+          sampling: this.config.sampling,
+        });
+        return parseQuizDraft(reply);
+      } catch (error) {
+        const tryFailed =
+          error instanceof QuizGenerationError || error instanceof ModelTimeoutError;
+        if (!tryFailed) {
+          throw error;
+        }
+      }
+    }
+    throw new QuizGenerationError();
   }
 }
 

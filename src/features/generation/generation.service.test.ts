@@ -10,6 +10,7 @@ import { QuizService } from "@/features/quiz/quiz.service";
 import type { Chunk } from "@/features/retrieval/retrieval.model";
 import { RetrievalServiceFake } from "@/features/retrieval/retrieval.service.fake";
 import {
+  ModelUnavailableError,
   NoRelevantSourcesError,
   QuizGenerationError,
   ValidationError,
@@ -121,7 +122,9 @@ describe("GenerationService", () => {
         ),
       ),
     },
-  ])("rejects $kind with QuizGenerationError and saves nothing", async ({ reply }) => {
+  ])("rejects $kind three times in a row with QuizGenerationError and saves nothing", async ({ reply }) => {
+    llmClient.queueReply(reply);
+    llmClient.queueReply(reply);
     llmClient.queueReply(reply);
     const generationService = aGenerationService(someChunks());
 
@@ -133,6 +136,56 @@ describe("GenerationService", () => {
     );
     await expect(result).rejects.toMatchObject({ code: "QUIZ_GENERATION_FAILED" });
     expect(quizRepository.savedQuizzes).toEqual([]);
+  });
+
+  describe("the model's tries", () => {
+    it("saves the quiz when an invalid first reply is followed by a valid one", async () => {
+      llmClient.queueReply('{"questions": [');
+      llmClient.queueReply(JSON.stringify(aDraft()));
+      const generationService = aGenerationService(someChunks());
+
+      const quiz = await generationService.generateQuiz({ topic: "Embeddings" });
+
+      expect(quiz.questions).toHaveLength(5);
+      expect(quizRepository.savedQuizzes).toEqual([quiz]);
+    });
+
+    it("counts a timeout as a failed try", async () => {
+      llmClient.queueTimeout();
+      llmClient.queueReply(JSON.stringify(aDraft()));
+      const generationService = aGenerationService(someChunks());
+
+      const quiz = await generationService.generateQuiz({ topic: "Embeddings" });
+
+      expect(quizRepository.savedQuizzes).toEqual([quiz]);
+    });
+
+    it("throws QuizGenerationError after three timeouts", async () => {
+      llmClient.queueTimeout();
+      llmClient.queueTimeout();
+      llmClient.queueTimeout();
+      const generationService = aGenerationService(someChunks());
+
+      const result = generationService.generateQuiz({ topic: "Embeddings" });
+
+      await expect(result).rejects.toThrow(QuizGenerationError);
+      expect(quizRepository.savedQuizzes).toEqual([]);
+    });
+
+    it("throws ModelUnavailableError at once when the model can't be reached", async () => {
+      // Only one reply is queued, so a retry would fail the test.
+      llmClient.queueUnavailable();
+      const generationService = aGenerationService(someChunks());
+
+      const result = generationService.generateQuiz({ topic: "Embeddings" });
+
+      await expect(result).rejects.toThrow(ModelUnavailableError);
+      await expect(result).rejects.toThrow(
+        "The local model isn't reachable. Check that Ollama is running.",
+      );
+      await expect(result).rejects.toMatchObject({ code: "MODEL_UNAVAILABLE" });
+      expect(quizRepository.savedQuizzes).toEqual([]);
+    });
   });
 
   describe("the topic", () => {
