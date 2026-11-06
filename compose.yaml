@@ -9,7 +9,8 @@ services:
       # APP_PORT changes the host port when 3000 is taken.
       - "${APP_PORT:-3000}:3000"
     environment:
-      OLLAMA_MODEL: ${OLLAMA_MODEL:-qwen3:1.7b}
+      # The pull service below downloads this same model.
+      OLLAMA_MODEL: &ollama-model ${OLLAMA_MODEL:-qwen3:1.7b}
       # Not read from .env, where it points at a native Ollama on localhost.
       OLLAMA_BASE_URL: http://ollama:11434
       DEMO_MODE: ${DEMO_MODE:-false}
@@ -25,7 +26,7 @@ services:
         condition: service_completed_successfully
 
   ollama:
-    image: ollama/ollama:0.40.15
+    image: &ollama-image ollama/ollama:0.40.15
     # No published port, so it can't clash with a native Ollama on 11434.
     volumes:
       - ollama-models:/root/.ollama
@@ -36,10 +37,10 @@ services:
       retries: 12
 
   ollama-pull:
-    image: ollama/ollama:0.40.15
+    image: *ollama-image
     environment:
       OLLAMA_HOST: http://ollama:11434
-    command: ["pull", "${OLLAMA_MODEL:-qwen3:1.7b}"]
+    command: ["pull", *ollama-model]
     depends_on:
       ollama:
         condition: service_healthy

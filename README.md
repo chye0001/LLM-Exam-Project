@@ -1,5 +1,5 @@
 # LLM-Exam-Project
-Interactive quiz generated using RAG + L-LLM where data is pulled from a vector database, enabling semantic search.
+Interactive quiz generated using RAG + L-LLM where chunks are retrieved from a knowledge base with semantic search.
 
 ## Run it with Docker Compose
 
