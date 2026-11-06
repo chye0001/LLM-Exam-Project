@@ -1,6 +1,6 @@
 # Quiz generator
 
-A local quiz app for students revising course material. The student names a topic, the app retrieves matching material from the knowledge base, and a local model writes a multiple-choice quiz grounded in that material.
+A local quiz app for students revising for an exam. The student names a topic, the app retrieves matching chunks from the knowledge base, and a local model writes a multiple-choice quiz grounded in those chunks.
 
 ## Language
 

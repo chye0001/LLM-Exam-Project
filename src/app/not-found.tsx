@@ -1,15 +1,7 @@
-import Link from "next/link";
-
-import { PageHeading } from "@/components/ui/page-heading";
+import { NotFoundMessage } from "@/components/not-found-message";
 
 export default function NotFound() {
   return (
-    <section className="space-y-3">
-      <PageHeading>Page not found</PageHeading>
-      <p className="text-muted">{"That page doesn't exist."}</p>
-      <Link href="/" className="inline-block text-accent underline underline-offset-4">
-        Back to the home page
-      </Link>
-    </section>
+    <NotFoundMessage title="Page not found" message="That page doesn't exist." />
   );
 }
