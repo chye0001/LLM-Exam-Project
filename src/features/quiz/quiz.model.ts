@@ -128,6 +128,11 @@ export type NewOption = Omit<Option, "id">;
 
 export type NewExcerpt = Omit<Excerpt, "id">;
 
+/** A saved quiz as the quiz list shows it. */
+export type QuizSummary = Pick<Quiz, "id" | "topic" | "createdAt"> & {
+  questionCount: number;
+};
+
 export const QUIZ_NOT_FOUND_MESSAGE = "That quiz doesn't exist.";
 
 export type CreateQuizInput = {

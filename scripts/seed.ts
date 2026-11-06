@@ -1,6 +1,7 @@
-// Saves one sample quiz through the quiz service and prints its id.
-// Run it with `npm run db:seed`. The dependency container imports `server-only`,
-// so the script runs with the `react-server` export condition.
+// Saves one sample quiz through the quiz service and prints its id. When a quiz
+// with the sample topic is already saved, it prints that one's id instead of
+// saving a copy. Run it with `npm run db:seed`. The dependency container imports
+// `server-only`, so the script runs with the `react-server` export condition.
 
 import type { NewExcerpt, QuizDraft } from "@/features/quiz/quiz.model";
 import { quizService } from "@/shared/dependency-container";
@@ -83,14 +84,24 @@ const excerpts: NewExcerpt[] = [
 ];
 
 async function main() {
-  const quiz = await quizService.createQuiz({
-    topic,
-    draft,
-    excerpts,
-    ungrounded: false,
-  });
-  console.log(`Saved the sample quiz "${quiz.topic}" with id ${quiz.id}`);
-  console.log(`Open it at http://localhost:3000/quizzes/${quiz.id}`);
+  const savedQuizzes = await quizService.listQuizzes();
+  const savedSample = savedQuizzes.find((quiz) => quiz.topic === topic);
+
+  let id: string;
+  if (savedSample) {
+    id = savedSample.id;
+    console.log(`The sample quiz "${topic}" is already saved with id ${id}`);
+  } else {
+    const quiz = await quizService.createQuiz({
+      topic,
+      draft,
+      excerpts,
+      ungrounded: false,
+    });
+    id = quiz.id;
+    console.log(`Saved the sample quiz "${topic}" with id ${id}`);
+  }
+  console.log(`Open it at http://localhost:3000/quizzes/${id}`);
 }
 
 main().catch((error: unknown) => {

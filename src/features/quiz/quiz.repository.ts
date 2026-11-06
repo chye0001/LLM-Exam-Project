@@ -1,4 +1,4 @@
-import type { NewQuiz, Quiz } from "@/features/quiz/quiz.model";
+import type { NewQuiz, Quiz, QuizSummary } from "@/features/quiz/quiz.model";
 import type { QuizRepositoryInterface } from "@/features/quiz/quiz.repository.interface";
 import type { Prisma, PrismaClient } from "@/shared/db/generated/client";
 
@@ -56,5 +56,20 @@ export class QuizRepository implements QuizRepositoryInterface {
       where: { id },
       include: quizInclude,
     });
+  }
+
+  async findAllSummaries(): Promise<QuizSummary[]> {
+    const quizzes = await this.prisma.quiz.findMany({
+      select: {
+        id: true,
+        topic: true,
+        createdAt: true,
+        _count: { select: { questions: true } },
+      },
+    });
+    return quizzes.map(({ _count, ...quiz }) => ({
+      ...quiz,
+      questionCount: _count.questions,
+    }));
   }
 }

@@ -1,4 +1,8 @@
-import type { CreateQuizInput, Quiz } from "@/features/quiz/quiz.model";
+import type {
+  CreateQuizInput,
+  Quiz,
+  QuizSummary,
+} from "@/features/quiz/quiz.model";
 
 export interface QuizServiceInterface {
   /**
@@ -9,4 +13,7 @@ export interface QuizServiceInterface {
 
   /** Returns the quiz, or throws `NotFoundError` if it doesn't exist. */
   getQuiz(id: string): Promise<Quiz>;
+
+  /** Lists the saved quizzes, newest first. */
+  listQuizzes(): Promise<QuizSummary[]>;
 }

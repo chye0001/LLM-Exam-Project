@@ -3,6 +3,7 @@ import {
   quizDraftSchema,
   type CreateQuizInput,
   type Quiz,
+  type QuizSummary,
 } from "@/features/quiz/quiz.model";
 import type { QuizRepositoryInterface } from "@/features/quiz/quiz.repository.interface";
 import type { QuizServiceInterface } from "@/features/quiz/quiz.service.interface";
@@ -51,6 +52,13 @@ export class QuizService implements QuizServiceInterface {
       throw new NotFoundError(QUIZ_NOT_FOUND_MESSAGE);
     }
     return quiz;
+  }
+
+  async listQuizzes(): Promise<QuizSummary[]> {
+    const quizzes = await this.quizRepository.findAllSummaries();
+    return quizzes.toSorted(
+      (first, second) => second.createdAt.getTime() - first.createdAt.getTime(),
+    );
   }
 }
 

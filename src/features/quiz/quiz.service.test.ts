@@ -228,6 +228,34 @@ describe("QuizService", () => {
       await expect(result).rejects.toMatchObject({ code: "NOT_FOUND" });
     });
   });
+
+  describe("listing quizzes", () => {
+    it("lists the saved quizzes newest first with their topic, number of questions and creation date", async () => {
+      const older = await quizService.createQuiz(
+        aQuizInput({ topic: "Embeddings" }),
+      );
+      const newer = await quizService.createQuiz(
+        aQuizInput({ topic: "Similarity search" }),
+      );
+
+      const quizzes = await quizService.listQuizzes();
+
+      expect(quizzes).toEqual([
+        {
+          id: newer.id,
+          topic: "Similarity search",
+          questionCount: 5,
+          createdAt: newer.createdAt,
+        },
+        {
+          id: older.id,
+          topic: "Embeddings",
+          questionCount: 5,
+          createdAt: older.createdAt,
+        },
+      ]);
+    });
+  });
 });
 
 function aQuizInput(changes: Partial<CreateQuizInput> = {}): CreateQuizInput {
