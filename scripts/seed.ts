@@ -11,7 +11,7 @@ const topic = "Cosine similarity";
 const draft: QuizDraft = {
   questions: [
     {
-      text: "What does cosine similarity measure?",
+      question: "What does cosine similarity measure?",
       correctOption: "The angle between two vectors",
       distractors: [
         "The straight-line distance between two points",
@@ -22,7 +22,7 @@ const draft: QuizDraft = {
         "Cosine similarity measures the angle between two vectors and ignores their length.",
     },
     {
-      text: "Which of these is NOT true of the dot product?",
+      question: "Which of these is NOT true of the dot product?",
       correctOption: "It ignores the lengths of the vectors",
       distractors: [
         "It multiplies matching dimensions and adds up the results",
@@ -33,7 +33,7 @@ const draft: QuizDraft = {
         "The dot product depends on both the angle and the lengths of the vectors.",
     },
     {
-      text: "Why do many systems normalize embeddings to length 1?",
+      question: "Why do many systems normalize embeddings to length 1?",
       correctOption: "So the cheaper dot product ranks results like cosine similarity",
       distractors: [
         "So Euclidean distance grows for similar texts",
@@ -44,7 +44,7 @@ const draft: QuizDraft = {
         "For vectors of length 1, the dot product and cosine similarity produce the same ranking.",
     },
     {
-      text: "What does a similarity threshold do during retrieval?",
+      question: "What does a similarity threshold do during retrieval?",
       correctOption: "It drops chunks that match the request too weakly",
       distractors: [
         "It keeps exactly the top k chunks",
@@ -55,7 +55,7 @@ const draft: QuizDraft = {
         "Chunks below the threshold are dropped, so an off-topic request retrieves nothing instead of the least bad matches.",
     },
     {
-      text: "What can happen when the right chunk isn't retrieved?",
+      question: "What can happen when the right chunk isn't retrieved?",
       correctOption: "The model refuses or falls back on its training data",
       distractors: [
         "The model still answers from the missing chunk",

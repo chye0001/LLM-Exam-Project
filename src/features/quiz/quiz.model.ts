@@ -16,7 +16,7 @@ const draftText = z
   .min(1, "Questions, options and explanations can't be empty.");
 
 const questionDraftSchema = z.object({
-  text: draftText,
+  question: draftText,
   correctOption: draftText,
   distractors: z
     .array(draftText)
@@ -41,7 +41,7 @@ export const quizDraftSchema = z
     const firstNumberByQuestion = new Map<string, number>();
 
     draft.questions.forEach((question, index) => {
-      const questionKey = normalizeForComparison(question.text);
+      const questionKey = normalizeForComparison(question.question);
       const firstNumber = firstNumberByQuestion.get(questionKey);
       if (firstNumber === undefined) {
         firstNumberByQuestion.set(questionKey, index + 1);

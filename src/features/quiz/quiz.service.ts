@@ -34,7 +34,7 @@ export class QuizService implements QuizServiceInterface {
       topic,
       ungrounded,
       questions: draftCheck.data.questions.map((draftQuestion) => ({
-        text: draftQuestion.text,
+        text: draftQuestion.question,
         explanation: draftQuestion.explanation,
         options: shuffle([
           { text: draftQuestion.correctOption, isCorrect: true },
