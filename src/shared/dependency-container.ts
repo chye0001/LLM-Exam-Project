@@ -1,5 +1,9 @@
 import "server-only";
 
+import { AttemptRepository } from "@/features/attempt/attempt.repository";
+import type { AttemptRepositoryInterface } from "@/features/attempt/attempt.repository.interface";
+import { AttemptService } from "@/features/attempt/attempt.service";
+import type { AttemptServiceInterface } from "@/features/attempt/attempt.service.interface";
 import { loadGenerationConfig } from "@/features/generation/generation.config";
 import { GenerationService } from "@/features/generation/generation.service";
 import type { GenerationServiceInterface } from "@/features/generation/generation.service.interface";
@@ -19,6 +23,8 @@ const generationConfig = loadGenerationConfig();
 
 const quizRepository: QuizRepositoryInterface = new QuizRepository(prisma);
 
+const attemptRepository: AttemptRepositoryInterface = new AttemptRepository(prisma);
+
 // Replace the stub with the group's retriever here once it exists.
 const retrievalService: RetrievalServiceInterface = new RetrievalServiceStub();
 
@@ -31,4 +37,9 @@ export const generationService: GenerationServiceInterface = new GenerationServi
   llmClient,
   quizService,
   generationConfig,
+);
+
+export const attemptService: AttemptServiceInterface = new AttemptService(
+  attemptRepository,
+  quizService,
 );
