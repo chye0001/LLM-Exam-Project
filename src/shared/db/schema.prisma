@@ -1,0 +1,53 @@
+generator client {
+  provider = "prisma-client"
+  output   = "./generated"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model Quiz {
+  id         String     @id @default(cuid())
+  topic      String
+  ungrounded Boolean
+  createdAt  DateTime   @default(now())
+  questions  Question[]
+  excerpts   Excerpt[]
+}
+
+model Question {
+  id          String   @id @default(cuid())
+  quiz        Quiz     @relation(fields: [quizId], references: [id], onDelete: Cascade)
+  quizId      String
+  position    Int
+  text        String
+  explanation String
+  options     Option[]
+
+  @@unique([quizId, position])
+}
+
+model Option {
+  id         String   @id @default(cuid())
+  question   Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  questionId String
+  position   Int
+  text       String
+  isCorrect  Boolean
+
+  @@unique([questionId, position])
+}
+
+model Excerpt {
+  id          String @id @default(cuid())
+  quiz        Quiz   @relation(fields: [quizId], references: [id], onDelete: Cascade)
+  quizId      String
+  position    Int
+  chunkId     String
+  sourceTitle String
+  text        String
+  similarity  Float
+
+  @@unique([quizId, position])
+}
