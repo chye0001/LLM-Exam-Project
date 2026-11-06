@@ -21,7 +21,6 @@ RUN npm run build
 
 FROM base AS runner
 ENV NODE_ENV=production \
-  PORT=3000 \
   HOSTNAME=0.0.0.0
 # The full node_modules holds the Prisma CLI that applies the migrations. The
 # standalone app is copied on top of it.

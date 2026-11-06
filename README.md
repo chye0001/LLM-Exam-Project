@@ -13,7 +13,7 @@ This starts three services:
 - `ollama`: Ollama from the official image. Its models live on the `ollama-models` volume, and it publishes no port, so it can't clash with a native Ollama.
 - `ollama-pull`: pulls the model once and exits. The app starts after it has finished, so the first start waits for the download.
 
-Quizzes live in SQLite on the `quiz-data` volume, so they survive `docker compose down` and rebuilds. `docker compose down -v` deletes them, and the downloaded model with them.
+Quizzes and attempts live in SQLite on the `quiz-data` volume, so they survive `docker compose down` and rebuilds. `docker compose down -v` deletes them, and the downloaded model with them.
 
 Settings, read from your shell or a `.env` file next to `compose.yaml`:
 
