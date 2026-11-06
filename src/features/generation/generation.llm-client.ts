@@ -20,7 +20,6 @@ export class LlmClient implements LlmClientInterface {
 
   async chat({ messages, jsonSchema, sampling }: ChatRequest): Promise<string> {
     let response: Response;
-    let body: OllamaChatResponse;
     try {
       response = await fetch(this.chatUrl(), {
         method: "POST",
@@ -40,10 +39,6 @@ export class LlmClient implements LlmClientInterface {
         }),
         signal: AbortSignal.timeout(this.config.timeoutMs),
       });
-      if (!response.ok) {
-        throw await this.errorFor(response);
-      }
-      body = (await response.json()) as OllamaChatResponse;
     } catch (error) {
       if (error instanceof Error && error.name === "TimeoutError") {
         throw new ModelTimeoutError();
@@ -54,15 +49,17 @@ export class LlmClient implements LlmClientInterface {
       }
       throw error;
     }
-    return body.message?.content ?? "";
-  }
 
-  /** Ollama answers 404 when the model isn't installed. */
-  private async errorFor(response: Response): Promise<Error> {
+    // Ollama answers 404 when the model isn't installed.
     if (response.status === 404) {
-      return new ModelUnavailableError();
+      throw new ModelUnavailableError();
     }
-    return new Error(`Ollama answered ${response.status}: ${await response.text()}`);
+    if (!response.ok) {
+      throw new Error(`Ollama answered ${response.status}: ${await response.text()}`);
+    }
+
+    const body = (await response.json()) as OllamaChatResponse;
+    return body.message?.content ?? "";
   }
 
   private chatUrl(): string {
