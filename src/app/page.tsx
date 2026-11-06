@@ -6,7 +6,11 @@ import { CreateQuizForm } from "@/components/create-quiz-form";
 import { QuizList } from "@/components/quiz-list";
 import { PageHeading } from "@/components/ui/page-heading";
 import { Spinner } from "@/components/ui/spinner";
-import { attemptService, quizService } from "@/shared/dependency-container";
+import {
+  attemptService,
+  demoMode,
+  quizService,
+} from "@/shared/dependency-container";
 
 export default function HomePage() {
   return (
@@ -17,7 +21,12 @@ export default function HomePage() {
           A local model writes five-question quizzes from the knowledge base.
         </p>
       </div>
-      <CreateQuizForm generateQuiz={generateQuiz} />
+      {/* Shows the form without the checkbox until demo mode has been read. */}
+      <Suspense
+        fallback={<CreateQuizForm generateQuiz={generateQuiz} demoMode={false} />}
+      >
+        <CreateQuizSection />
+      </Suspense>
       <section className="space-y-4">
         <h2 className="text-lg font-semibold">Saved quizzes</h2>
         <Suspense
@@ -33,6 +42,13 @@ export default function HomePage() {
       </section>
     </section>
   );
+}
+
+/** The form, with the "Skip retrieval" checkbox in demo mode. */
+async function CreateQuizSection() {
+  // Reads DEMO_MODE when the app runs instead of when it's built.
+  await connection();
+  return <CreateQuizForm generateQuiz={generateQuiz} demoMode={demoMode} />;
 }
 
 /**

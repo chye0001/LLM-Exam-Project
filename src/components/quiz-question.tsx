@@ -4,6 +4,7 @@ import { useEffect } from "react";
 
 import { Button } from "@/components/ui/button";
 import { PageHeading } from "@/components/ui/page-heading";
+import { UngroundedLabel } from "@/components/ui/ungrounded-label";
 import type { Question } from "@/features/quiz/quiz.model";
 
 /**
@@ -13,6 +14,7 @@ import type { Question } from "@/features/quiz/quiz.model";
  */
 export function QuizQuestion({
   topic,
+  ungrounded,
   question,
   questionNumber,
   questionCount,
@@ -21,6 +23,8 @@ export function QuizQuestion({
   onNext,
 }: {
   topic: string;
+  /** Whether the quiz was made without retrieval in demo mode. */
+  ungrounded: boolean;
   question: Question;
   questionNumber: number;
   questionCount: number;
@@ -59,6 +63,7 @@ export function QuizQuestion({
         Question {questionNumber} of {questionCount}
       </p>
       <PageHeading>{topic}</PageHeading>
+      {ungrounded && <UngroundedLabel />}
 
       <h2 className="mt-10 text-lg font-medium">{question.text}</h2>
 

@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { PageHeading } from "@/components/ui/page-heading";
 import { Spinner } from "@/components/ui/spinner";
+import { UngroundedLabel } from "@/components/ui/ungrounded-label";
 import type { SubmittedAttempt } from "@/features/attempt/attempt.model";
 import type { Quiz } from "@/features/quiz/quiz.model";
 import type { ActionResult } from "@/shared/safe-action";
@@ -9,7 +10,8 @@ export type SubmitAttemptResult = ActionResult<SubmittedAttempt>;
 
 /**
  * The end of a quiz: the score the server computed for the saved attempt, every question with the student's answer and
- * the correct option, and the excerpts the quiz was built from.
+ * the correct option, and the excerpts the quiz was built from. An ungrounded quiz shows "Made without sources" on its
+ * header and in place of the excerpts.
  */
 export function QuizResults({
   quiz,
@@ -35,6 +37,7 @@ export function QuizResults({
     <article>
       <p className="text-sm text-muted">Results</p>
       <PageHeading>{quiz.topic}</PageHeading>
+      {quiz.ungrounded && <UngroundedLabel />}
 
       <div className="mt-6 flex flex-wrap items-center gap-6">
         {submitResult === null ? (
@@ -83,24 +86,36 @@ export function QuizResults({
 
       <section className="mt-12">
         <h2 className="text-lg font-semibold">Excerpts</h2>
-        <p className="mt-1 text-sm text-muted">
-          The excerpts this quiz was written from, closest match first.
-        </p>
-        <ul className="mt-4 space-y-4">
-          {quiz.excerpts.map((excerpt) => (
-            <li key={excerpt.id} className="rounded-md border p-4">
-              <div className="flex items-baseline justify-between gap-4">
-                <p className="font-medium">{excerpt.sourceTitle}</p>
-                <p className="text-sm text-muted">
-                  Similarity {excerpt.similarity.toFixed(2)}
-                </p>
-              </div>
-              <p className="mt-2 whitespace-pre-line text-sm text-muted">
-                {excerpt.text}
-              </p>
-            </li>
-          ))}
-        </ul>
+        {quiz.ungrounded ? (
+          <>
+            <UngroundedLabel />
+            <p className="mt-2 text-sm text-muted">
+              Retrieval was skipped in demo mode, so the model wrote this quiz
+              from its own knowledge.
+            </p>
+          </>
+        ) : (
+          <>
+            <p className="mt-1 text-sm text-muted">
+              The excerpts this quiz was written from, closest match first.
+            </p>
+            <ul className="mt-4 space-y-4">
+              {quiz.excerpts.map((excerpt) => (
+                <li key={excerpt.id} className="rounded-md border p-4">
+                  <div className="flex items-baseline justify-between gap-4">
+                    <p className="font-medium">{excerpt.sourceTitle}</p>
+                    <p className="text-sm text-muted">
+                      Similarity {excerpt.similarity.toFixed(2)}
+                    </p>
+                  </div>
+                  <p className="mt-2 whitespace-pre-line text-sm text-muted">
+                    {excerpt.text}
+                  </p>
+                </li>
+              ))}
+            </ul>
+          </>
+        )}
       </section>
     </article>
   );
