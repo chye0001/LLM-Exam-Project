@@ -1,18 +1,23 @@
+import type { SubmitAttemptResult } from "@/components/quiz-attempt";
 import { Button } from "@/components/ui/button";
 import { PageHeading } from "@/components/ui/page-heading";
+import { Spinner } from "@/components/ui/spinner";
 import type { Quiz } from "@/features/quiz/quiz.model";
 
 /**
- * The end of a quiz: the score, every question with the student's answer and
+ * The end of a quiz: the score the server computed for the saved attempt, every question with the student's answer and
  * the correct option, and the excerpts the quiz was built from.
  */
 export function QuizResults({
   quiz,
   answerIds,
+  submitResult,
   onRetake,
 }: {
   quiz: Quiz;
   answerIds: Record<string, string>;
+  /** Null while the attempt is being saved. */
+  submitResult: SubmitAttemptResult | null;
   onRetake: () => void;
 }) {
   const review = quiz.questions.map((question) => {
@@ -22,7 +27,6 @@ export function QuizResults({
     );
     return { question, correctOption, answer };
   });
-  const score = review.filter(({ answer }) => answer?.isCorrect).length;
 
   return (
     <article>
@@ -30,10 +34,20 @@ export function QuizResults({
       <PageHeading>{quiz.topic}</PageHeading>
 
       <div className="mt-6 flex flex-wrap items-center gap-6">
-        <p className="text-3xl font-semibold tracking-tight">
-          {score} of {quiz.questions.length}
-        </p>
-        <Button type="button" onClick={onRetake}>
+        {submitResult === null ? (
+          <p role="status" className="flex items-center gap-2 text-muted">
+            <Spinner />
+            Saving your attempt...
+          </p>
+        ) : submitResult.ok ? (
+          <p className="text-3xl font-semibold tracking-tight">
+            {submitResult.data.score} of {quiz.questions.length}
+          </p>
+        ) : (
+          <p role="alert">{submitResult.error.message}</p>
+        )}
+        {/* Waits for the save, so a late reply can't land on the next attempt. */}
+        <Button type="button" onClick={onRetake} disabled={submitResult === null}>
           Retake
         </Button>
       </div>
