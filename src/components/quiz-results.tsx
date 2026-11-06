@@ -5,6 +5,8 @@ import type { SubmittedAttempt } from "@/features/attempt/attempt.model";
 import type { Quiz } from "@/features/quiz/quiz.model";
 import type { ActionResult } from "@/shared/safe-action";
 
+export type SubmitAttemptResult = ActionResult<SubmittedAttempt>;
+
 /**
  * The end of a quiz: the score the server computed for the saved attempt, every question with the student's answer and
  * the correct option, and the excerpts the quiz was built from.
@@ -18,7 +20,7 @@ export function QuizResults({
   quiz: Quiz;
   answerIds: Record<string, string>;
   /** Null while the attempt is being saved. */
-  submitResult: ActionResult<SubmittedAttempt> | null;
+  submitResult: SubmitAttemptResult | null;
   onRetake: () => void;
 }) {
   const review = quiz.questions.map((question) => {

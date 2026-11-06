@@ -3,15 +3,9 @@
 import { useState } from "react";
 
 import { QuizQuestion } from "@/components/quiz-question";
-import { QuizResults } from "@/components/quiz-results";
-import type {
-  Answer,
-  SubmittedAttempt,
-} from "@/features/attempt/attempt.model";
+import { QuizResults, type SubmitAttemptResult } from "@/components/quiz-results";
+import type { SubmitAttemptInput } from "@/features/attempt/attempt.model";
 import type { Quiz } from "@/features/quiz/quiz.model";
-import type { ActionResult } from "@/shared/safe-action";
-
-type SubmitAttemptResult = ActionResult<SubmittedAttempt>;
 
 const UNREACHABLE_SERVER: SubmitAttemptResult = {
   ok: false,
@@ -32,7 +26,7 @@ export function QuizAttempt({
   submitAttempt,
 }: {
   quiz: Quiz;
-  submitAttempt: (quizId: string, answers: Answer[]) => Promise<SubmitAttemptResult>;
+  submitAttempt: (input: SubmitAttemptInput) => Promise<SubmitAttemptResult>;
 }) {
   // The chosen option for each question, by question id.
   const [answerIds, setAnswerIds] = useState<Record<string, string>>({});
@@ -54,7 +48,7 @@ export function QuizAttempt({
       const answers = Object.entries(nextAnswerIds).map(
         ([questionId, chosenOptionId]) => ({ questionId, optionId: chosenOptionId }),
       );
-      submitAttempt(quiz.id, answers)
+      submitAttempt({ quizId: quiz.id, answers })
         .catch(() => UNREACHABLE_SERVER)
         .then(setSubmitResult);
     }

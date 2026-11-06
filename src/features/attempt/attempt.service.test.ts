@@ -125,14 +125,14 @@ function allCorrectAnswers(quiz: Quiz): Answer[] {
 }
 
 function correctAnswer(quiz: Quiz, questionIndex: number): Answer {
-  return answerWhere(quiz, questionIndex, true);
+  return pickAnswer(quiz, questionIndex, true);
 }
 
 function wrongAnswer(quiz: Quiz, questionIndex: number): Answer {
-  return answerWhere(quiz, questionIndex, false);
+  return pickAnswer(quiz, questionIndex, false);
 }
 
-function answerWhere(quiz: Quiz, questionIndex: number, isCorrect: boolean): Answer {
+function pickAnswer(quiz: Quiz, questionIndex: number, isCorrect: boolean): Answer {
   const question = quiz.questions[questionIndex];
   const option = question.options.find((candidate) => candidate.isCorrect === isCorrect)!;
   return { questionId: question.id, optionId: option.id };
