@@ -6,7 +6,10 @@ import {
   type ChatMessage,
   type GenerateQuizInput,
 } from "@/features/generation/generation.model";
-import { buildGroundedPrompt } from "@/features/generation/generation.prompt";
+import {
+  buildGroundedPrompt,
+  buildUngroundedPrompt,
+} from "@/features/generation/generation.prompt";
 import type { GenerationServiceInterface } from "@/features/generation/generation.service.interface";
 import type { LlmClientInterface } from "@/features/generation/generation.llm-client.interface";
 import {
@@ -41,6 +44,13 @@ export class GenerationService implements GenerationServiceInterface {
     }
     const topic = topicCheck.data;
 
+    if (input.skipRetrieval) {
+      if (!this.config.demoMode) {
+        throw new ValidationError("Skipping retrieval is only allowed in demo mode.");
+      }
+      return this.generateUngroundedQuiz(topic);
+    }
+
     const chunks = await this.retrievalService.retrieve(
       topic,
       this.config.chunksPerRetrieval,
@@ -67,6 +77,19 @@ export class GenerationService implements GenerationServiceInterface {
         similarity: chunk.similarity,
       })),
       ungrounded: false,
+    });
+  }
+
+  /** Writes the quiz without retrieval and saves it as ungrounded, with no excerpts. */
+  private async generateUngroundedQuiz(topic: string): Promise<Quiz> {
+    const draft = await this.writeDraft(
+      buildUngroundedPrompt({ topic, questionCount: this.config.questionsPerQuiz }),
+    );
+    return this.quizService.createQuiz({
+      topic,
+      draft,
+      excerpts: [],
+      ungrounded: true,
     });
   }
 

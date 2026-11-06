@@ -1,6 +1,10 @@
 import { beforeEach, describe, expect, it } from "vitest";
 
-import { DEFAULT_GENERATION_CONFIG } from "@/features/generation/generation.config";
+import {
+  DEFAULT_GENERATION_CONFIG,
+  type GenerationConfig,
+} from "@/features/generation/generation.config";
+import { buildUngroundedPrompt } from "@/features/generation/generation.prompt";
 import { GenerationService } from "@/features/generation/generation.service";
 import type { GenerationServiceInterface } from "@/features/generation/generation.service.interface";
 import { LlmClientFake } from "@/features/generation/generation.llm-client.fake";
@@ -26,12 +30,15 @@ describe("GenerationService", () => {
   });
 
   /** Wires the real services the way the dependency container does, with fakes at the edges. */
-  function aGenerationService(chunks: Chunk[]): GenerationServiceInterface {
+  function aGenerationService(
+    chunks: Chunk[],
+    config: GenerationConfig = DEFAULT_GENERATION_CONFIG,
+  ): GenerationServiceInterface {
     return new GenerationService(
       new RetrievalServiceFake(chunks),
       llmClient,
       new QuizService(quizRepository),
-      DEFAULT_GENERATION_CONFIG,
+      config,
     );
   }
 
@@ -184,6 +191,50 @@ describe("GenerationService", () => {
         "The local model isn't reachable. Check that Ollama is running.",
       );
       await expect(result).rejects.toMatchObject({ code: "MODEL_UNAVAILABLE" });
+      expect(quizRepository.savedQuizzes).toEqual([]);
+    });
+  });
+
+  describe("skipping retrieval", () => {
+    it("saves an ungrounded quiz without excerpts in demo mode, written from the ungrounded prompt", async () => {
+      llmClient.queueReply(JSON.stringify(aDraft()));
+      // Retrieval finds nothing, so the quiz can only succeed without consulting it.
+      const generationService = aGenerationService([], {
+        ...DEFAULT_GENERATION_CONFIG,
+        demoMode: true,
+      });
+
+      const quiz = await generationService.generateQuiz({
+        topic: "Embeddings",
+        skipRetrieval: true,
+      });
+
+      expect(quiz.topic).toBe("Embeddings");
+      expect(quiz.ungrounded).toBe(true);
+      expect(quiz.excerpts).toEqual([]);
+      expect(quiz.questions).toHaveLength(5);
+      expect(quizRepository.savedQuizzes).toEqual([quiz]);
+      expect(llmClient.requests.map((request) => request.messages)).toEqual([
+        buildUngroundedPrompt({ topic: "Embeddings", questionCount: 5 }),
+      ]);
+    });
+
+    it("is rejected with ValidationError outside demo mode", async () => {
+      // No reply is queued, so the request must be rejected before the model is asked.
+      const generationService = aGenerationService(someChunks(), {
+        ...DEFAULT_GENERATION_CONFIG,
+        demoMode: false,
+      });
+
+      const result = generationService.generateQuiz({
+        topic: "Embeddings",
+        skipRetrieval: true,
+      });
+
+      await expect(result).rejects.toThrow(ValidationError);
+      await expect(result).rejects.toThrow(
+        "Skipping retrieval is only allowed in demo mode.",
+      );
       expect(quizRepository.savedQuizzes).toEqual([]);
     });
   });
