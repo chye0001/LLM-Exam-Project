@@ -3,6 +3,7 @@ import type {
   ChatRequest,
   LlmClientInterface,
 } from "@/features/generation/generation.llm-client.interface";
+import { ModelTimeoutError, ModelUnavailableError } from "@/shared/errors";
 
 type OllamaChatResponse = {
   message?: { content?: string };
@@ -18,29 +19,43 @@ export class LlmClient implements LlmClientInterface {
   ) {}
 
   async chat({ messages, jsonSchema, sampling }: ChatRequest): Promise<string> {
-    const response = await fetch(this.chatUrl(), {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        model: this.config.model,
-        messages,
-        stream: false,
-        think: false,
-        format: jsonSchema,
-        options: {
-          num_ctx: sampling.contextWindow,
-          temperature: sampling.temperature,
-          top_p: sampling.topP,
-          top_k: sampling.topK,
-        },
-      }),
-      signal: AbortSignal.timeout(this.config.timeoutMs),
-    });
+    let response: Response;
+    try {
+      response = await fetch(this.chatUrl(), {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          model: this.config.model,
+          messages,
+          stream: false,
+          think: false,
+          format: jsonSchema,
+          options: {
+            num_ctx: sampling.contextWindow,
+            temperature: sampling.temperature,
+            top_p: sampling.topP,
+            top_k: sampling.topK,
+          },
+        }),
+        signal: AbortSignal.timeout(this.config.timeoutMs),
+      });
+    } catch (error) {
+      if (error instanceof Error && error.name === "TimeoutError") {
+        throw new ModelTimeoutError();
+      }
+      // fetch throws a TypeError when nothing answers at the Ollama URL.
+      if (error instanceof TypeError) {
+        throw new ModelUnavailableError();
+      }
+      throw error;
+    }
 
+    // Ollama answers 404 when the model isn't installed.
+    if (response.status === 404) {
+      throw new ModelUnavailableError();
+    }
     if (!response.ok) {
-      throw new Error(
-        `Ollama answered ${response.status}: ${await response.text()}`,
-      );
+      throw new Error(`Ollama answered ${response.status}: ${await response.text()}`);
     }
 
     const body = (await response.json()) as OllamaChatResponse;

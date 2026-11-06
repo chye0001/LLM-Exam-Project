@@ -33,7 +33,25 @@ export class NoRelevantSourcesError extends AppError {
   }
 }
 
-/** The model's reply wasn't a valid quiz draft. */
+/** Ollama can't be reached, or the configured model isn't installed. */
+export class ModelUnavailableError extends AppError {
+  readonly code = "MODEL_UNAVAILABLE";
+
+  constructor() {
+    super("The local model isn't reachable. Check that Ollama is running.");
+  }
+}
+
+/** One model call took longer than the configured limit. Generation counts it as a failed try. */
+export class ModelTimeoutError extends AppError {
+  readonly code = "MODEL_TIMEOUT";
+
+  constructor() {
+    super("The model took too long to answer.");
+  }
+}
+
+/** The model couldn't write a valid quiz draft in the tries it had. */
 export class QuizGenerationError extends AppError {
   readonly code = "QUIZ_GENERATION_FAILED";
 

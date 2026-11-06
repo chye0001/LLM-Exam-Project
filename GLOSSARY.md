@@ -32,6 +32,10 @@ _Avoid_: prompt, query, subject
 A quiz as the model first writes it, before validation.
 _Avoid_: raw output, generated JSON
 
+**Try**:
+One call to the model while generating a quiz. Generation gives the model up to three tries to write a valid quiz draft.
+_Avoid_: attempt, retry
+
 **Quiz**:
 A quiz draft that passed validation and was saved, ready to be taken.
 
