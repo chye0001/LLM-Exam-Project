@@ -23,3 +23,21 @@ export class NotFoundError extends AppError {
     super(QUIZ_NOT_FOUND_MESSAGE);
   }
 }
+
+/** Retrieval found no chunk that matches the topic, so the model isn't asked to write a quiz. */
+export class NoRelevantSourcesError extends AppError {
+  readonly code = "NO_RELEVANT_SOURCES";
+
+  constructor() {
+    super("Nothing in the knowledge base matches this topic.");
+  }
+}
+
+/** The model's reply wasn't a valid quiz draft. */
+export class QuizGenerationError extends AppError {
+  readonly code = "QUIZ_GENERATION_FAILED";
+
+  constructor() {
+    super("The model couldn't write a valid quiz. Try again or rephrase the topic.");
+  }
+}

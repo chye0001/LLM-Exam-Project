@@ -1,0 +1,208 @@
+import { beforeEach, describe, expect, it } from "vitest";
+
+import { DEFAULT_GENERATION_CONFIG } from "@/features/generation/generation.config";
+import { GenerationService } from "@/features/generation/generation.service";
+import type { GenerationServiceInterface } from "@/features/generation/generation.service.interface";
+import { LlmClientFake } from "@/features/generation/llm-client.fake";
+import type { QuizDraft } from "@/features/quiz/quiz.model";
+import { QuizRepositoryFake } from "@/features/quiz/quiz.repository.fake";
+import { QuizService } from "@/features/quiz/quiz.service";
+import type { Chunk } from "@/features/retrieval/retrieval.model";
+import { RetrievalServiceFake } from "@/features/retrieval/retrieval.service.fake";
+import {
+  NoRelevantSourcesError,
+  QuizGenerationError,
+  ValidationError,
+} from "@/shared/errors";
+
+describe("GenerationService", () => {
+  let quizRepository: QuizRepositoryFake;
+  let llmClient: LlmClientFake;
+
+  beforeEach(() => {
+    quizRepository = new QuizRepositoryFake();
+    llmClient = new LlmClientFake();
+  });
+
+  /** Wires the real services the way the dependency container does, with fakes at the edges. */
+  function aGenerationService(chunks: Chunk[]): GenerationServiceInterface {
+    return new GenerationService(
+      new RetrievalServiceFake(chunks),
+      llmClient,
+      new QuizService(quizRepository),
+      DEFAULT_GENERATION_CONFIG,
+    );
+  }
+
+  it("saves the model's quiz under the topic with one excerpt per chunk", async () => {
+    llmClient.queueReply(JSON.stringify(aDraft()));
+    const generationService = aGenerationService(someChunks());
+
+    const quiz = await generationService.generateQuiz({ topic: "Embeddings" });
+
+    expect(quiz.topic).toBe("Embeddings");
+    expect(quiz.ungrounded).toBe(false);
+    expect(quiz.questions.map((question) => question.text)).toEqual([
+      "What is idea 1?",
+      "What is idea 2?",
+      "What is idea 3?",
+      "What is idea 4?",
+      "What is idea 5?",
+    ]);
+    quiz.questions.forEach((question) => {
+      expect(question.options).toHaveLength(4);
+      expect(question.options.filter((option) => option.isCorrect)).toHaveLength(1);
+    });
+    expect(quiz.excerpts).toMatchObject([
+      {
+        chunkId: "embeddings-explained-1",
+        sourceTitle: "Embeddings explained",
+        text: "An embedding is a list of numbers, a vector, that represents a piece of text.",
+        similarity: 1,
+      },
+      {
+        chunkId: "building-a-rag-pipeline-2",
+        sourceTitle: "Building a RAG pipeline",
+        text: "Some systems also apply a similarity threshold.",
+        similarity: 0.5,
+      },
+    ]);
+    expect(quizRepository.savedQuizzes).toEqual([quiz]);
+  });
+
+  it("refuses with NoRelevantSourcesError when retrieval finds nothing, without asking the model", async () => {
+    // No reply is queued, so a model call would fail the test.
+    const generationService = aGenerationService([]);
+
+    const result = generationService.generateQuiz({ topic: "The French Revolution" });
+
+    await expect(result).rejects.toThrow(NoRelevantSourcesError);
+    await expect(result).rejects.toThrow(
+      "Nothing in the knowledge base matches this topic.",
+    );
+    await expect(result).rejects.toMatchObject({ code: "NO_RELEVANT_SOURCES" });
+    expect(quizRepository.savedQuizzes).toEqual([]);
+  });
+
+  it.each([
+    { kind: "a reply that isn't JSON", reply: '{"questions": [' },
+    {
+      kind: "a draft with four questions",
+      reply: JSON.stringify({ questions: aDraft().questions.slice(0, 4) }),
+    },
+    {
+      kind: "a draft with an empty explanation",
+      reply: JSON.stringify(
+        withChange(aDraft(), (draft) => (draft.questions[2].explanation = "")),
+      ),
+    },
+    {
+      kind: "a draft with two options that are the same",
+      reply: JSON.stringify(
+        withChange(
+          aDraft(),
+          (draft) => (draft.questions[0].distractors[0] = "The right answer to 1."),
+        ),
+      ),
+    },
+    {
+      kind: "a draft with a labeled option",
+      reply: JSON.stringify(
+        withChange(
+          aDraft(),
+          (draft) => (draft.questions[4].correctOption = "A) The right answer to 5"),
+        ),
+      ),
+    },
+  ])("rejects $kind with QuizGenerationError and saves nothing", async ({ reply }) => {
+    llmClient.queueReply(reply);
+    const generationService = aGenerationService(someChunks());
+
+    const result = generationService.generateQuiz({ topic: "Embeddings" });
+
+    await expect(result).rejects.toThrow(QuizGenerationError);
+    await expect(result).rejects.toThrow(
+      "The model couldn't write a valid quiz. Try again or rephrase the topic.",
+    );
+    await expect(result).rejects.toMatchObject({ code: "QUIZ_GENERATION_FAILED" });
+    expect(quizRepository.savedQuizzes).toEqual([]);
+  });
+
+  describe("the topic", () => {
+    it("is trimmed before it becomes the quiz's title", async () => {
+      llmClient.queueReply(JSON.stringify(aDraft()));
+      const generationService = aGenerationService(someChunks());
+
+      const quiz = await generationService.generateQuiz({ topic: "  Embeddings \n" });
+
+      expect(quiz.topic).toBe("Embeddings");
+    });
+
+    it.each([
+      { length: 2, topic: "AI" },
+      { length: 100, topic: "a".repeat(100) },
+    ])("may be $length characters long", async ({ topic }) => {
+      llmClient.queueReply(JSON.stringify(aDraft()));
+      const generationService = aGenerationService(someChunks());
+
+      const quiz = await generationService.generateQuiz({ topic: ` ${topic} ` });
+
+      expect(quiz.topic).toBe(topic);
+    });
+
+    it.each([
+      { kind: "empty", topic: "" },
+      { kind: "only spaces", topic: "    " },
+      { kind: "1 character long after trimming", topic: "  a  " },
+      { kind: "101 characters long", topic: "a".repeat(101) },
+    ])("is rejected with ValidationError when it is $kind", async ({ topic }) => {
+      // No reply is queued, so the topic must be rejected before the model is asked.
+      const generationService = aGenerationService(someChunks());
+
+      const result = generationService.generateQuiz({ topic });
+
+      await expect(result).rejects.toThrow(ValidationError);
+      await expect(result).rejects.toThrow(
+        "Enter a topic between 2 and 100 characters.",
+      );
+      expect(quizRepository.savedQuizzes).toEqual([]);
+    });
+  });
+});
+
+function withChange(draft: QuizDraft, change: (draft: QuizDraft) => void): QuizDraft {
+  change(draft);
+  return draft;
+}
+
+function aDraft(): QuizDraft {
+  return {
+    questions: [1, 2, 3, 4, 5].map((number) => ({
+      question: `What is idea ${number}?`,
+      correctOption: `The right answer to ${number}`,
+      distractors: [
+        `A wrong answer to ${number}`,
+        `Another wrong answer to ${number}`,
+        `A third wrong answer to ${number}`,
+      ],
+      explanation: `Idea ${number} is explained in the chunks.`,
+    })),
+  };
+}
+
+function someChunks(): Chunk[] {
+  return [
+    {
+      id: "embeddings-explained-1",
+      sourceTitle: "Embeddings explained",
+      text: "An embedding is a list of numbers, a vector, that represents a piece of text.",
+      similarity: 1,
+    },
+    {
+      id: "building-a-rag-pipeline-2",
+      sourceTitle: "Building a RAG pipeline",
+      text: "Some systems also apply a similarity threshold.",
+      similarity: 0.5,
+    },
+  ];
+}

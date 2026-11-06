@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-const QUESTIONS_PER_QUIZ = 5;
+export const QUESTIONS_PER_QUIZ = 5;
 const DISTRACTORS_PER_QUESTION = 3;
 
 /**
