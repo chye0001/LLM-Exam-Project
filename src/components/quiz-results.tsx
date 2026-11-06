@@ -12,13 +12,13 @@ export function QuizResults({
   onRetake,
 }: {
   quiz: Quiz;
-  answerIds: string[];
+  answerIds: Record<string, string>;
   onRetake: () => void;
 }) {
-  const review = quiz.questions.map((question, index) => {
+  const review = quiz.questions.map((question) => {
     const correctOption = question.options.find((option) => option.isCorrect);
     const answer = question.options.find(
-      (option) => option.id === answerIds[index],
+      (option) => option.id === answerIds[question.id],
     );
     return { question, correctOption, answer };
   });

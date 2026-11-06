@@ -11,20 +11,18 @@ import type { Quiz } from "@/features/quiz/quiz.model";
  * The quiz arrives with its correct options, so no step makes a server call.
  */
 export function QuizAttempt({ quiz }: { quiz: Quiz }) {
-  // The answer to each question, by its index.
-  const [answerIds, setAnswerIds] = useState<string[]>([]);
+  // The chosen option for each question, by question id.
+  const [answerIds, setAnswerIds] = useState<Record<string, string>>({});
   const [questionIndex, setQuestionIndex] = useState(0);
 
   const isFinished = questionIndex >= quiz.questions.length;
+  const question = quiz.questions[questionIndex];
 
   function choose(optionId: string) {
     // The first answer to a question locks it.
-    setAnswerIds((ids) => {
-      if (ids[questionIndex]) return ids;
-      const answered = [...ids];
-      answered[questionIndex] = optionId;
-      return answered;
-    });
+    setAnswerIds((ids) =>
+      ids[question.id] ? ids : { ...ids, [question.id]: optionId },
+    );
   }
 
   function next() {
@@ -33,7 +31,7 @@ export function QuizAttempt({ quiz }: { quiz: Quiz }) {
   }
 
   function retake() {
-    setAnswerIds([]);
+    setAnswerIds({});
     setQuestionIndex(0);
     window.scrollTo(0, 0);
   }
@@ -47,10 +45,10 @@ export function QuizAttempt({ quiz }: { quiz: Quiz }) {
   return (
     <QuizQuestion
       topic={quiz.topic}
-      question={quiz.questions[questionIndex]}
+      question={question}
       questionNumber={questionIndex + 1}
       questionCount={quiz.questions.length}
-      answerId={answerIds[questionIndex] ?? null}
+      answerId={answerIds[question.id] ?? null}
       onChoose={choose}
       onNext={next}
     />
