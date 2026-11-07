@@ -153,7 +153,7 @@ npm run lint
 npm test
 ```
 
-The tests cover the business rules in the services and the prompt builder. They run without a database or a model, using hand-written fakes such as `LlmClientFake` and `RetrievalServiceFake`, so they are fast and run anywhere. The test files sit next to the code they test, as `*.test.ts` in `src/features/`.
+The tests cover the business rules in the services and the prompt builder. They run without a database or a model, using hand-written fakes such as `LlmClientFake` and `RetrievalServiceFake`, so they are fast and run anywhere. The tests and the fakes live in `test/`, which mirrors the folders in `src/`. For example, the tests for `src/features/quiz/quiz.service.ts` are in `test/features/quiz/quiz.service.test.ts`.
 
 ### Manual check
 
@@ -175,13 +175,14 @@ The prompt lives in `src/features/generation/generation.prompt.ts`. Each of the 
 - **Tone**: `TONE`, plain, neutral and concise English.
 - **Target**: `target()`, students revising the topic for an exam, tested on understanding rather than names and numbers.
 
-`buildGroundedPrompt()` puts Traits, Tone and Target in the system message, and the Task and the numbered chunks in the user message. `buildUngroundedPrompt()` builds the demo-mode variant. `src/features/generation/generation.prompt.test.ts` tests both, and `src/features/generation/generation.service.ts` calls them.
+`buildGroundedPrompt()` puts Traits, Tone and Target in the system message, and the Task and the numbered chunks in the user message. `buildUngroundedPrompt()` builds the demo-mode variant. `test/features/generation/generation.prompt.test.ts` tests both, and `src/features/generation/generation.service.ts` calls them.
 
 ## Project layout
 
 - `src/app/`: Next.js pages, layouts and server actions.
 - `src/components/`: React components.
-- `src/features/`: one folder per feature. `quiz` and `attempt` have a model, a repository and a service behind interfaces. `generation` holds the prompt, the Ollama client and the generation service. `retrieval` holds the retrieval interface, the stub and a fake.
+- `src/features/`: one folder per feature. `quiz` and `attempt` have a model, a repository and a service behind interfaces. `generation` holds the prompt, the Ollama client and the generation service. `retrieval` holds the retrieval interface and the stub.
 - `src/shared/`: the dependency container, the errors, `safeAction` and the Prisma client, schema and migrations.
+- `test/`: the unit tests and the fakes they use, in the same folders as `src/`.
 - `GLOSSARY.md`: the project's vocabulary.
 - `docs/adr/`: the architecture decisions.

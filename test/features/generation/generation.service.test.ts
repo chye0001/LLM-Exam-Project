@@ -7,12 +7,12 @@ import {
 import { buildUngroundedPrompt } from "@/features/generation/generation.prompt";
 import { GenerationService } from "@/features/generation/generation.service";
 import type { GenerationServiceInterface } from "@/features/generation/generation.service.interface";
-import { LlmClientFake } from "@/features/generation/generation.llm-client.fake";
+import { LlmClientFake } from "@test/features/generation/generation.llm-client.fake";
 import type { QuizDraft } from "@/features/quiz/quiz.model";
-import { QuizRepositoryFake } from "@/features/quiz/quiz.repository.fake";
+import { QuizRepositoryFake } from "@test/features/quiz/quiz.repository.fake";
 import { QuizService } from "@/features/quiz/quiz.service";
 import type { Chunk } from "@/features/retrieval/retrieval.model";
-import { RetrievalServiceFake } from "@/features/retrieval/retrieval.service.fake";
+import { RetrievalServiceFake } from "@test/features/retrieval/retrieval.service.fake";
 import {
   ModelUnavailableError,
   NoRelevantSourcesError,

@@ -1,11 +1,11 @@
 import { beforeEach, describe, expect, it } from "vitest";
 
 import type { Answer } from "@/features/attempt/attempt.model";
-import { AttemptRepositoryFake } from "@/features/attempt/attempt.repository.fake";
+import { AttemptRepositoryFake } from "@test/features/attempt/attempt.repository.fake";
 import { AttemptService } from "@/features/attempt/attempt.service";
 import type { AttemptServiceInterface } from "@/features/attempt/attempt.service.interface";
 import type { Quiz, QuizDraft } from "@/features/quiz/quiz.model";
-import { QuizRepositoryFake } from "@/features/quiz/quiz.repository.fake";
+import { QuizRepositoryFake } from "@test/features/quiz/quiz.repository.fake";
 import { QuizService } from "@/features/quiz/quiz.service";
 import type { QuizServiceInterface } from "@/features/quiz/quiz.service.interface";
 import { NotFoundError, ValidationError } from "@/shared/errors";

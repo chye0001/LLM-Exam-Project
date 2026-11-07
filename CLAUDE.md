@@ -4,6 +4,7 @@
 - `src/components/` holds React components, with small building blocks in `ui/`. Components import only types from features, and pages pass server actions to them as props.
 - Each `src/features/<feature>/` holds `<feature>.model.ts` (types and Zod schemas), `<feature>.repository.interface.ts`, `<feature>.repository.ts`, `<feature>.service.interface.ts` and `<feature>.service.ts`.
 - Interfaces are named `<Name>Interface`, implementations get the plain name, and stubs and fakes end in `Stub` or `Fake`.
+- `test/` sits next to `src/` and mirrors its folders. It holds the `*.test.ts` files and the fakes they use, and nothing in `src/` imports from it. Tests import from `src/` with `@/` and from `test/` with `@test/`. A stub the running app uses, such as `RetrievalServiceStub`, stays in `src/`.
 - Services receive their dependencies as interfaces through the constructor. `src/shared/dependency-container.ts` is the only place that creates implementations.
 - Only repository implementations and `src/shared/db/prisma.ts` import Prisma.
 - Errors extend `AppError`. Server actions are wrapped in `safeAction` and return `{ ok: false, error }` instead of throwing.

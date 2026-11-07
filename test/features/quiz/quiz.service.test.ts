@@ -5,7 +5,7 @@ import type {
   NewExcerpt,
   QuizDraft,
 } from "@/features/quiz/quiz.model";
-import { QuizRepositoryFake } from "@/features/quiz/quiz.repository.fake";
+import { QuizRepositoryFake } from "@test/features/quiz/quiz.repository.fake";
 import { QuizService } from "@/features/quiz/quiz.service";
 import type { QuizServiceInterface } from "@/features/quiz/quiz.service.interface";
 import { NotFoundError, ValidationError } from "@/shared/errors";
