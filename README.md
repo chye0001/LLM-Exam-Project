@@ -10,7 +10,7 @@ Everything runs on your machine. Next.js serves the app, Ollama runs the model, 
 - [Docker](https://docs.docker.com/get-docker/) with Compose v2 (`docker compose`), to run the whole project in containers.
 - [Node.js](https://nodejs.org/) 24 with npm, to develop and to run the tests. The Docker image uses Node 24 too.
 - [Ollama](https://ollama.com/download) installed natively, for development and for the low-memory fallback. Docker Compose doesn't need it.
-- About 4 GB of free memory for Docker with the default model, plus about 2 GB of disk for the Ollama image and the model. The app runs the model on the CPU, so it needs no GPU.
+- About 4 GB of free memory for Docker with the default model, plus about 8 GB of disk: the Ollama image is about 5 GB, the app image about 1 GB and the model 1.4 GB. The app runs the model on the CPU, so it needs no GPU.
 
 ## Installation
 
@@ -64,7 +64,7 @@ To try a bigger model on a machine with more memory, pull it and set `OLLAMA_MOD
 
 ### The stub's sample sources
 
-`RetrievalServiceStub` in `src/features/retrieval/retrieval.service.stub.ts` serves five chunks from two sample sources. Their text is in `src/features/retrieval/retrieval.sample-chunks.ts`:
+`RetrievalServiceStub` in `src/features/retrieval/retrieval.service.stub.ts` serves five chunks from two sample sources. Their text is in `src/features/retrieval/retrieval.sample-chunks.ts`, and the full sources are in `.scratch/quiz-generator-mvp/sample-sources/`:
 
 - "Embeddings explained", three chunks: what an embedding is, how embedding models are trained, and how cosine similarity, the dot product and Euclidean distance compare embeddings.
 - "Building a RAG pipeline", two chunks: chunk size and overlap, and how retrieval-augmented generation retrieves chunks and puts them in the prompt.
@@ -77,7 +77,7 @@ The stub matches by shared words instead of embeddings. A chunk's similarity is 
 
 > **TODO, the group:** describe here how to load the knowledge base once ingestion exists:
 >
-> 1. Where the source files go.
+> 1. Where the sources go.
 > 2. The command that splits them into chunks, embeds them and stores them in the vector store.
 > 3. Which embedding model to pull, for example `ollama pull embeddinggemma`, and how Docker Compose pulls it.
 > 4. Any new environment variables, which also belong in `.env.example`, `compose.yaml` and the table above.
@@ -135,7 +135,7 @@ Open http://localhost:3000. The dev server uses the native Ollama on http://loca
 
 Demo mode shows the same topic generated with and without retrieval. Turn it on by setting `DEMO_MODE="true"` in `.env` and restarting the app, with `docker compose up` or `npm run dev`. In a bash shell you can also run `DEMO_MODE=true docker compose up`.
 
-A "Skip retrieval" checkbox then appears under the topic field. A quiz made with it ticked never calls retrieval and is written from the model's own knowledge. The quiz page labels it "Made without sources" and shows no excerpts. Outside demo mode, the app rejects a request to skip retrieval.
+A "Skip retrieval" checkbox then appears under the topic field. A quiz made with it ticked is an ungrounded quiz: it never calls retrieval and is written from the model's own knowledge. The quiz page labels it "Made without sources" and shows no excerpts. Outside demo mode, the app rejects a request to skip retrieval.
 
 A demo at the exam could go like this:
 
@@ -164,7 +164,7 @@ With the app running, either with Docker Compose or the dev server:
 3. Check the score, the review of every question and the excerpts on the results screen.
 4. Go back to the home page. The quiz is in the list with its best score.
 5. Type "the French Revolution". The error "Nothing in the knowledge base matches this topic." appears under the field.
-6. Stop Ollama and create a quiz. The error "The local model isn't reachable. Check that Ollama is running." appears.
+6. Stop Ollama, with `docker compose stop ollama` or by quitting the native Ollama, and create a quiz. The error "The local model isn't reachable. Check that Ollama is running." appears.
 
 ## Where the 4T's are implemented
 
@@ -181,7 +181,7 @@ The prompt lives in `src/features/generation/generation.prompt.ts`. Each of the 
 
 - `src/app/`: Next.js pages, layouts and server actions.
 - `src/components/`: React components.
-- `src/features/`: one folder per feature (quiz, attempt, generation, retrieval), each with its model, repository and service behind interfaces.
+- `src/features/`: one folder per feature. `quiz` and `attempt` have a model, a repository and a service behind interfaces. `generation` holds the prompt, the Ollama client and the generation service. `retrieval` holds the retrieval interface, the stub and a fake.
 - `src/shared/`: the dependency container, the errors, `safeAction` and the Prisma client, schema and migrations.
 - `GLOSSARY.md`: the project's vocabulary.
 - `docs/adr/`: the architecture decisions.
