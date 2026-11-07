@@ -60,7 +60,7 @@ To try a bigger model on a machine with more memory, pull it and set `OLLAMA_MOD
 
 ## Loading RAG material
 
-> **The group's retriever isn't built yet.** Until it is, the app uses a stub that serves two built-in sample sources, so there is nothing to load. The whole app works against the stub.
+> **The retriever isn't built yet.** Until it is, the app uses a stub that serves two built-in sample sources, so there is nothing to load. The whole app works against the stub.
 
 ### The stub's sample sources
 
@@ -71,18 +71,18 @@ To try a bigger model on a machine with more memory, pull it and set `OLLAMA_MOD
 
 The stub matches by shared words instead of embeddings. A chunk's similarity is the share of the topic's meaningful words that the chunk or its source title contains. Topics such as "cosine similarity", "embeddings" or "chunk size" find chunks. An unrelated topic such as "the French Revolution" finds nothing, and the app refuses to write a quiz.
 
-### Ingesting the group's knowledge base
+### Ingesting the knowledge base
 
-<!-- TODO(group): replace this section with the real ingestion steps. -->
+<!-- TODO: replace this section with the real ingestion steps. -->
 
-> **TODO, the group:** describe here how to load the knowledge base once ingestion exists:
+> **TODO:** describe here how to load the knowledge base once ingestion exists:
 >
 > 1. Where the sources go.
 > 2. The command that splits them into chunks, embeds them and stores them in the vector store.
 > 3. Which embedding model to pull, for example `ollama pull embeddinggemma`, and how Docker Compose pulls it.
 > 4. Any new environment variables, which also belong in `.env.example`, `compose.yaml` and the table above.
 
-The retriever plugs in behind one interface, `RetrievalServiceInterface` in `src/features/retrieval/retrieval.service.interface.ts`. Its comments describe the contract. To switch from the stub to the real retriever, change the line in `src/shared/dependency-container.ts` that creates `RetrievalServiceStub`. ADR-0001 in `docs/adr/` explains this boundary.
+The retriever plugs in behind one interface, `RetrievalServiceInterface` in `src/features/retrieval/retrieval.service.interface.ts`. Its comments describe the contract. To switch from the stub to the real retriever, change the line in `src/shared/dependency-container.ts` that creates `RetrievalServiceStub`.
 
 ## Start the app with Docker Compose
 
@@ -136,12 +136,6 @@ Open http://localhost:3000. The dev server uses the native Ollama on http://loca
 Demo mode shows the same topic generated with and without retrieval. Turn it on by setting `DEMO_MODE="true"` in `.env` and restarting the app, with `docker compose up` or `npm run dev`. In a bash shell you can also run `DEMO_MODE=true docker compose up`.
 
 A "Skip retrieval" checkbox then appears under the topic field. A quiz made with it ticked is an ungrounded quiz: it never calls retrieval and is written from the model's own knowledge. The quiz page labels it "Made without sources" and shows no excerpts. Outside demo mode, the app rejects a request to skip retrieval.
-
-A demo at the exam could go like this:
-
-1. Generate "cosine similarity" normally. The results screen shows the excerpts it came from, with their source titles and similarity.
-2. Generate "cosine similarity" again with "Skip retrieval" ticked, and compare the two quizzes.
-3. Generate "the French Revolution". The app refuses, because nothing in the knowledge base matches.
 
 ## Testing
 
