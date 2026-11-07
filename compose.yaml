@@ -14,10 +14,10 @@ services:
       # Not read from .env, where it points at a native Ollama on localhost.
       OLLAMA_BASE_URL: http://ollama:11434
       DEMO_MODE: ${DEMO_MODE:-false}
-      DATABASE_URL: file:./src/shared/db/data/quiz.db
+      DATABASE_URL: file:./database/data/quiz.db
     volumes:
       # Only the data folder, so the migrations in the image stay visible.
-      - quiz-data:/app/src/shared/db/data
+      - quiz-data:/app/database/data
     extra_hosts:
       # Lets the fallback reach a native Ollama on Linux too.
       - "host.docker.internal:host-gateway"

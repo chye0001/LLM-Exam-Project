@@ -44,7 +44,7 @@ yarn-error.log*
 next-env.d.ts
 
 # database: the SQLite files and the generated Prisma client
-/src/shared/db/data/*
-!/src/shared/db/data/.gitkeep
-/src/shared/db/generated/
+/database/data/*
+!/database/data/.gitkeep
+/database/generated/
 scripts/afk-issues.sh

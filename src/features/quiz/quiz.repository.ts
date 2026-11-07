@@ -1,6 +1,6 @@
 import type { NewQuiz, Quiz, QuizSummary } from "@/features/quiz/quiz.model";
 import type { QuizRepositoryInterface } from "@/features/quiz/quiz.repository.interface";
-import type { Prisma, PrismaClient } from "@/shared/db/generated/client";
+import type { Prisma, PrismaClient } from "@database/generated/client";
 
 // Loads a quiz in the shape of the Quiz type: items in stored order, without
 // the foreign keys and positions that only the database needs.

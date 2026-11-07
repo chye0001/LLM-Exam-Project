@@ -1,7 +1,7 @@
 import { PrismaBetterSqlite3 } from "@prisma/adapter-better-sqlite3";
 
-import { getDatabaseUrl } from "@/shared/db/database-url";
-import { PrismaClient } from "@/shared/db/generated/client";
+import { getDatabaseUrl } from "@database/database-url";
+import { PrismaClient } from "@database/generated/client";
 
 function createPrismaClient(): PrismaClient {
   return new PrismaClient({

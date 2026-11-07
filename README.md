@@ -26,7 +26,7 @@ That is all Docker Compose needs. For development and testing, also install the 
 npm install
 ```
 
-`npm install` also generates the Prisma client into `src/shared/db/generated/`.
+`npm install` also generates the Prisma client into `database/generated/`.
 
 ## Configuration
 
@@ -37,7 +37,7 @@ The app reads these environment variables. `.env.example` lists them with their 
 | `OLLAMA_MODEL` | `qwen3:1.7b` | The Ollama model that writes quizzes. |
 | `OLLAMA_BASE_URL` | `http://localhost:11434` | Where Ollama runs. Docker Compose sets it to its own Ollama service and ignores `.env` for it. |
 | `DEMO_MODE` | `false` | `true` shows the "Skip retrieval" checkbox. See [Demo mode](#demo-mode). |
-| `DATABASE_URL` | `file:./src/shared/db/data/quiz.db` | Where the SQLite file lives, relative to the project root. Docker Compose sets it and ignores `.env` for it. |
+| `DATABASE_URL` | `file:./database/data/quiz.db` | Where the SQLite file lives, relative to the project root. Docker Compose sets it and ignores `.env` for it. |
 | `APP_PORT` | `3000` | Docker Compose only. The port on your machine, when 3000 is taken. |
 
 Docker Compose reads `OLLAMA_MODEL`, `DEMO_MODE` and `APP_PORT` from your shell or from the `.env` file next to `compose.yaml`. The dev server and `npm run db:seed` read `.env` too.
@@ -128,7 +128,7 @@ npm run dev
 
 Open http://localhost:3000. The dev server uses the native Ollama on http://localhost:11434, as set in `.env`.
 
-- `npm run db:migrate` creates the SQLite file in `src/shared/db/data/` and applies the migrations. The data folder is gitignored, so quiz data never reaches the repo.
+- `npm run db:migrate` creates the SQLite file in `database/data/` and applies the migrations. The data folder is gitignored, so quiz data never reaches the repo.
 - `npm run db:seed` saves a sample quiz about cosine similarity, so you can take a quiz without waiting for the model.
 
 ## Demo mode
@@ -182,7 +182,8 @@ The prompt lives in `src/features/generation/generation.prompt.ts`. Each of the 
 - `src/app/`: Next.js pages, layouts and server actions.
 - `src/components/`: React components.
 - `src/features/`: one folder per feature. `quiz` and `attempt` have a model, a repository and a service behind interfaces. `generation` holds the prompt, the Ollama client and the generation service. `retrieval` holds the retrieval interface and the stub.
-- `src/shared/`: the dependency container, the errors, `safeAction` and the Prisma client, schema and migrations.
+- `src/shared/`: the dependency container, the errors and `safeAction`.
 - `test/`: the unit tests and the fakes they use, in the same folders as `src/`.
+- `database/`: the Prisma schema, the migrations, the gitignored SQLite data and the Prisma client.
 - `GLOSSARY.md`: the project's vocabulary.
 - `docs/adr/`: the architecture decisions.

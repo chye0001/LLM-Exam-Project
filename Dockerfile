@@ -10,13 +10,13 @@ WORKDIR /app
 # so it needs the Prisma config and the schema.
 FROM base AS deps
 COPY package.json package-lock.json prisma7.config.ts ./
-COPY src/shared/db/schema.prisma src/shared/db/database-url.ts ./src/shared/db/
+COPY database/schema.prisma database/database-url.ts ./database/
 RUN npm ci
 
 FROM base AS build
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
-COPY --from=deps /app/src/shared/db/generated ./src/shared/db/generated
+COPY --from=deps /app/database/generated ./database/generated
 RUN npm run build
 
 FROM base AS runner
@@ -28,8 +28,9 @@ COPY --from=build --chown=node:node /app/node_modules ./node_modules
 COPY --from=build --chown=node:node /app/.next/standalone ./
 COPY --from=build --chown=node:node /app/.next/static ./.next/static
 COPY --from=build --chown=node:node /app/prisma7.config.ts ./
-# The schema, the migrations and the empty data folder the volume mounts on.
-COPY --from=build --chown=node:node /app/src/shared/db ./src/shared/db
+# The schema, the migrations, the database URL the Prisma config reads and the
+# empty data folder the volume mounts on.
+COPY --from=build --chown=node:node /app/database ./database
 USER node
 EXPOSE 3000
 CMD ["sh", "-c", "node_modules/.bin/prisma migrate deploy && exec node server.js"]

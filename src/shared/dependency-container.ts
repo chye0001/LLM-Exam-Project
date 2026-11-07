@@ -15,7 +15,7 @@ import { QuizService } from "@/features/quiz/quiz.service";
 import type { QuizServiceInterface } from "@/features/quiz/quiz.service.interface";
 import type { RetrievalServiceInterface } from "@/features/retrieval/retrieval.service.interface";
 import { RetrievalServiceStub } from "@/features/retrieval/retrieval.service.stub";
-import { prisma } from "@/shared/db/prisma";
+import { prisma } from "@database/prisma";
 
 // The only place that creates implementations. Everything else depends on the interfaces.
 
