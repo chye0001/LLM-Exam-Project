@@ -64,7 +64,7 @@ To try a bigger model on a machine with more memory, pull it and set `OLLAMA_MOD
 
 ### The stub's sample sources
 
-`RetrievalServiceStub` in `src/features/retrieval/retrieval.service.stub.ts` serves five chunks from two sample sources. Their text is in `src/features/retrieval/retrieval.sample-chunks.ts`, and the full sources are in `.scratch/quiz-generator-mvp/sample-sources/`:
+`RetrievalServiceStub` in `src/features/retrieval/retrieval.service.stub.ts` serves five chunks from two sample sources. Their text is in `src/features/retrieval/retrieval.sample-chunks.ts`:
 
 - "Embeddings explained", three chunks: what an embedding is, how embedding models are trained, and how cosine similarity, the dot product and Euclidean distance compare embeddings.
 - "Building a RAG pipeline", two chunks: chunk size and overlap, and how retrieval-augmented generation retrieves chunks and puts them in the prompt.
