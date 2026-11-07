@@ -1,3 +1,5 @@
+@AGENTS.md
+
 ## Code conventions
 
 - `src/app/` holds only Next.js files: pages, layouts and server actions in `*.actions.ts` next to the page that uses them. The app has no route handlers.
