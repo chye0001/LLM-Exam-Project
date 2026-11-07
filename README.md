@@ -7,7 +7,7 @@ Everything runs on your machine. Next.js serves the app, Ollama runs the model, 
 ## Prerequisites
 
 - [Git](https://git-scm.com/).
-- [Docker](https://docs.docker.com/get-docker/) with Compose v2 (`docker compose`), to run the whole project in containers.
+- [Docker](https://docs.docker.com/get-docker/) with Compose v2 or later (`docker compose`), to run the whole project in containers.
 - [Node.js](https://nodejs.org/) 24 with npm, to develop and to run the tests. The Docker image uses Node 24 too.
 - [Ollama](https://ollama.com/download) installed natively, for development and for the low-memory fallback. Docker Compose doesn't need it.
 - About 4 GB of free memory for Docker with the default model, plus about 8 GB of disk: the Ollama image is about 5 GB, the app image about 1 GB and the model 1.4 GB. The app runs the model on the CPU, so it needs no GPU.
