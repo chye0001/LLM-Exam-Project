@@ -1,4 +1,5 @@
 import type {
+  Chunk,
   ChunkRecord,
   SourceVersion,
 } from "@/features/retrieval/retrieval.model";
@@ -41,6 +42,20 @@ export class RetrievalRepositoryFake implements RetrievalRepositoryInterface {
     this.sources.delete(sourceName);
   }
 
+  /** Ranks every stored chunk by cosine similarity, the way Qdrant does with cosine distance. */
+  async search(vector: number[], limit: number, threshold: number): Promise<Chunk[]> {
+    return this.storedChunks()
+      .map((record) => ({
+        id: record.chunkId,
+        text: record.text,
+        sourceTitle: record.sourceTitle,
+        similarity: cosineSimilarity(vector, record.vector),
+      }))
+      .filter((chunk) => chunk.similarity >= threshold)
+      .toSorted((first, second) => second.similarity - first.similarity)
+      .slice(0, limit);
+  }
+
   /** Every stored chunk, in source and then chunk order. */
   storedChunks(): ChunkRecord[] {
     return [...this.sources.values()].flat();
@@ -55,4 +70,16 @@ export class RetrievalRepositoryFake implements RetrievalRepositoryInterface {
       ]);
     }
   }
+}
+
+function cosineSimilarity(first: number[], second: number[]): number {
+  let dot = 0;
+  let firstLength = 0;
+  let secondLength = 0;
+  for (let index = 0; index < first.length; index++) {
+    dot += first[index] * second[index];
+    firstLength += first[index] ** 2;
+    secondLength += second[index] ** 2;
+  }
+  return dot / (Math.sqrt(firstLength) * Math.sqrt(secondLength));
 }

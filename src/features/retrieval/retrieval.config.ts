@@ -35,8 +35,9 @@ export const DEFAULT_RETRIEVAL_CONFIG: RetrievalConfig = {
   knowledgeBaseDir: "knowledge-base",
   maxChunkCharacters: 800,
   overlapCharacters: 120,
-  // A starting guess until the group calibrates it against measured scores.
-  similarityThreshold: 0.35,
+  // A first measurement with the sample sources put a paraphrased topic at
+  // 0.31 and unrelated topics below 0.17. The group calibrates it with more topics.
+  similarityThreshold: 0.25,
   embeddingBatchSize: 32,
   embeddingTimeoutMs: 60 * 1000,
 };

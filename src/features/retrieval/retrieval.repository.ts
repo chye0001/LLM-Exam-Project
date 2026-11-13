@@ -1,11 +1,13 @@
 import { randomUUID } from "node:crypto";
 
-import { QdrantClient } from "@qdrant/js-client-rest";
+import { QdrantClient, QdrantClientTimeoutError } from "@qdrant/js-client-rest";
 
 import type { RetrievalConfig } from "@/features/retrieval/retrieval.config";
-import type {
-  ChunkRecord,
-  SourceVersion,
+import {
+  chunkPayloadSchema,
+  type Chunk,
+  type ChunkRecord,
+  type SourceVersion,
 } from "@/features/retrieval/retrieval.model";
 import type { RetrievalRepositoryInterface } from "@/features/retrieval/retrieval.repository.interface";
 import { KnowledgeBaseUnavailableError } from "@/shared/errors";
@@ -111,6 +113,38 @@ export class RetrievalRepository implements RetrievalRepositoryInterface {
     await this.call(() => this.deleteSourcePoints(sourceName));
   }
 
+  async search(vector: number[], limit: number, threshold: number): Promise<Chunk[]> {
+    return this.call(async () => {
+      let points;
+      try {
+        ({ points } = await this.client.query(this.collectionName, {
+          query: vector,
+          limit,
+          // Qdrant drops points below this cosine similarity itself.
+          score_threshold: threshold,
+          with_payload: true,
+          with_vector: false,
+        }));
+      } catch (error) {
+        // Qdrant answers 404 until the first ingestion creates the collection.
+        if (isNotFoundError(error)) {
+          return [];
+        }
+        throw error;
+      }
+
+      return points.map((point) => {
+        const payload = chunkPayloadSchema.parse(point.payload);
+        return {
+          id: payload.chunkId,
+          text: payload.text,
+          sourceTitle: payload.sourceTitle,
+          similarity: point.score,
+        };
+      });
+    });
+  }
+
   private async deleteSourcePoints(sourceName: string): Promise<void> {
     await this.client.delete(this.collectionName, {
       wait: true,
@@ -152,11 +186,22 @@ function isConnectionError(error: unknown): boolean {
   if (!(error instanceof Error)) {
     return false;
   }
-  // fetch throws a TypeError when nothing answers at the URL, and an error
-  // named TimeoutError or AbortError when the call takes too long.
+  // fetch throws a TypeError when nothing answers at the URL. The client
+  // throws QdrantClientTimeoutError when a call takes too long, and fetch an
+  // error named TimeoutError or AbortError.
   return (
     error instanceof TypeError ||
+    error instanceof QdrantClientTimeoutError ||
     error.name === "TimeoutError" ||
     error.name === "AbortError"
+  );
+}
+
+/** The client throws an error with the HTTP status for an answer that isn't OK. */
+function isNotFoundError(error: unknown): boolean {
+  return (
+    error instanceof Error &&
+    "status" in error &&
+    error.status === 404
   );
 }

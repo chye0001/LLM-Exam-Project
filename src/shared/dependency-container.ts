@@ -22,8 +22,8 @@ import { EmbeddingClient } from "@/features/retrieval/retrieval.embedding-client
 import type { EmbeddingClientInterface } from "@/features/retrieval/retrieval.embedding-client.interface";
 import { RetrievalRepository } from "@/features/retrieval/retrieval.repository";
 import type { RetrievalRepositoryInterface } from "@/features/retrieval/retrieval.repository.interface";
+import { RetrievalService } from "@/features/retrieval/retrieval.service";
 import type { RetrievalServiceInterface } from "@/features/retrieval/retrieval.service.interface";
-import { RetrievalServiceStub } from "@/features/retrieval/retrieval.service.stub";
 import { prisma } from "@database/prisma";
 
 // The only place that creates implementations. Everything else depends on the interfaces.
@@ -47,8 +47,11 @@ const retrievalRepository: RetrievalRepositoryInterface = new RetrievalRepositor
 
 const sourceRepository: SourceRepositoryInterface = new SourceRepository(retrievalConfig);
 
-// Replace the stub with the group's retriever here once it exists.
-const retrievalService: RetrievalServiceInterface = new RetrievalServiceStub();
+const retrievalService: RetrievalServiceInterface = new RetrievalService(
+  embeddingClient,
+  retrievalRepository,
+  retrievalConfig,
+);
 
 export const ingestionService: IngestionServiceInterface = new IngestionService(
   sourceRepository,

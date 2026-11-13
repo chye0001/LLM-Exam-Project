@@ -1,4 +1,5 @@
 import type {
+  Chunk,
   ChunkRecord,
   SourceVersion,
 } from "@/features/retrieval/retrieval.model";
@@ -27,4 +28,11 @@ export interface RetrievalRepositoryInterface {
 
   /** Deletes the source's stored chunks. */
   deleteSource(sourceName: string): Promise<void>;
+
+  /**
+   * Returns at most `limit` chunks whose cosine similarity to the vector is
+   * at least `threshold`, best match first. Returns an empty list when nothing
+   * passes or nothing has been stored yet.
+   */
+  search(vector: number[], limit: number, threshold: number): Promise<Chunk[]>;
 }
