@@ -13,6 +13,7 @@
     "db:migrate": "prisma migrate dev && prisma generate",
     "db:seed": "tsx --env-file-if-exists=.env --conditions=react-server scripts/seed.ts",
     "ingest": "tsx --env-file-if-exists=.env --conditions=react-server scripts/ingest.ts",
+    "retrieval:scores": "tsx --env-file-if-exists=.env --conditions=react-server scripts/similarity.ts",
     "postinstall": "prisma generate"
   },
   "dependencies": {

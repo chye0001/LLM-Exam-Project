@@ -35,9 +35,11 @@ export const DEFAULT_RETRIEVAL_CONFIG: RetrievalConfig = {
   knowledgeBaseDir: "knowledge-base",
   maxChunkCharacters: 800,
   overlapCharacters: 120,
-  // A first measurement with the sample sources put a paraphrased topic at
-  // 0.31 and unrelated topics below 0.17. The group calibrates it with more topics.
-  similarityThreshold: 0.25,
+  // Calibrated with `npm run retrieval:scores` on 22 topics against the sample
+  // sources: covered topics scored at least 0.294 and uncovered ones at most
+  // 0.248, so 0.27 sits in the middle of the gap. One covered paraphrase,
+  // "turning text into numbers", scored only 0.166 and is missed.
+  similarityThreshold: 0.27,
   embeddingBatchSize: 32,
   embeddingTimeoutMs: 60 * 1000,
 };

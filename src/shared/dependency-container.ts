@@ -53,6 +53,17 @@ const retrievalService: RetrievalServiceInterface = new RetrievalService(
   retrievalConfig,
 );
 
+/**
+ * Retrieval without the similarity threshold, so every chunk comes back with
+ * its score. Only `npm run retrieval:scores` uses it, to calibrate the threshold.
+ */
+export const unfilteredRetrievalService: RetrievalServiceInterface = new RetrievalService(
+  embeddingClient,
+  retrievalRepository,
+  // Cosine similarity is never below -1, so every chunk passes.
+  { similarityThreshold: -1 },
+);
+
 export const ingestionService: IngestionServiceInterface = new IngestionService(
   sourceRepository,
   embeddingClient,

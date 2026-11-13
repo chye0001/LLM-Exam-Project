@@ -108,7 +108,7 @@ describe("RetrievalService", () => {
     );
   });
 
-  it("uses a threshold of 0.25 by default", () => {
-    expect(DEFAULT_RETRIEVAL_CONFIG.similarityThreshold).toBe(0.25);
+  it("uses the calibrated threshold of 0.27 by default", () => {
+    expect(DEFAULT_RETRIEVAL_CONFIG.similarityThreshold).toBe(0.27);
   });
 });
