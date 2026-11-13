@@ -1,6 +1,6 @@
-# `docker compose up` runs the app, Ollama and a one-shot model pull.
-# Then open http://localhost:3000. See the README for the fallback that runs
-# only the app against a native Ollama.
+# `docker compose up` runs the app, Ollama, Qdrant and a one-shot pull of the
+# chat model and the embedding model. Then open http://localhost:3000. See the
+# README for the fallback that runs only the app against a native Ollama.
 
 services:
   app:
@@ -9,10 +9,13 @@ services:
       # APP_PORT changes the host port when 3000 is taken.
       - "${APP_PORT:-3000}:3000"
     environment:
-      # The pull service below downloads this same model.
+      # The pull service below downloads these same models.
       OLLAMA_MODEL: &ollama-model ${OLLAMA_MODEL:-qwen3:1.7b}
+      OLLAMA_EMBEDDING_MODEL: &embedding-model ${OLLAMA_EMBEDDING_MODEL:-all-minilm}
       # Not read from .env, where it points at a native Ollama on localhost.
       OLLAMA_BASE_URL: http://ollama:11434
+      # Not read from .env either, where it points at the published port.
+      QDRANT_URL: http://qdrant:6333
       DEMO_MODE: ${DEMO_MODE:-false}
       DATABASE_URL: file:./database/data/quiz.db
     volumes:
@@ -24,6 +27,8 @@ services:
     depends_on:
       ollama-pull:
         condition: service_completed_successfully
+      qdrant:
+        condition: service_healthy
 
   ollama:
     image: &ollama-image ollama/ollama:0.40.15
@@ -40,11 +45,36 @@ services:
     image: *ollama-image
     environment:
       OLLAMA_HOST: http://ollama:11434
-    command: ["pull", *ollama-model]
+      PULL_CHAT_MODEL: *ollama-model
+      PULL_EMBEDDING_MODEL: *embedding-model
+    # Two pulls in one service. `$$` keeps Compose from filling in the
+    # variables, so the shell does.
+    entrypoint: ["/bin/sh", "-c"]
+    command:
+      - ollama pull "$$PULL_CHAT_MODEL" && ollama pull "$$PULL_EMBEDDING_MODEL"
     depends_on:
       ollama:
         condition: service_healthy
 
+  # The vector database that holds the chunks and their embeddings.
+  qdrant:
+    image: qdrant/qdrant:v1.20.0
+    ports:
+      # Published so the dashboard opens at http://localhost:6333/dashboard and
+      # the dev server can reach Qdrant. QDRANT_PORT changes the host port.
+      - "${QDRANT_PORT:-6333}:6333"
+    environment:
+      QDRANT__TELEMETRY_DISABLED: "true"
+    volumes:
+      - qdrant-data:/qdrant/storage
+    healthcheck:
+      # The image has no curl, so bash checks that the API port accepts connections.
+      test: ["CMD", "bash", "-c", ":> /dev/tcp/127.0.0.1/6333"]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+
 volumes:
   quiz-data:
   ollama-models:
+  qdrant-data:
