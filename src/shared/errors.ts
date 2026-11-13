@@ -33,6 +33,15 @@ export class NoRelevantSourcesError extends AppError {
   }
 }
 
+/** Qdrant, the vector database that holds the chunks, doesn't answer. */
+export class KnowledgeBaseUnavailableError extends AppError {
+  readonly code = "KNOWLEDGE_BASE_UNAVAILABLE";
+
+  constructor() {
+    super("The knowledge base isn't reachable. Check that Qdrant is running.");
+  }
+}
+
 /** Ollama can't be reached, or the configured model isn't installed. */
 export class ModelUnavailableError extends AppError {
   readonly code = "MODEL_UNAVAILABLE";

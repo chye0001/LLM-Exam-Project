@@ -17,6 +17,22 @@ export type Source = {
   contentHash: string;
 };
 
+/** What one ingestion run did, by source file name. */
+export type IngestionReport = {
+  /** Sources that had no stored chunks before. */
+  added: string[];
+  /** Sources whose content or embedding model changed, so their chunks were replaced. */
+  updated: string[];
+  /** Sources whose stored chunks were already current. */
+  unchanged: string[];
+  /** Stored sources whose file is gone. */
+  removed: string[];
+  /** Sources with no text, which have no chunks. */
+  empty: string[];
+  /** How many chunks this run embedded and stored. */
+  chunksStored: number;
+};
+
 /** A piece of a source, ready to be embedded and stored. */
 export type SourceChunk = {
   /** The source's file name without `.md`, a dash and the position, such as `embeddings-explained-3`. */

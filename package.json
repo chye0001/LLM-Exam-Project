@@ -12,11 +12,13 @@
     "test:watch": "vitest",
     "db:migrate": "prisma migrate dev && prisma generate",
     "db:seed": "tsx --env-file-if-exists=.env --conditions=react-server scripts/seed.ts",
+    "ingest": "tsx --env-file-if-exists=.env --conditions=react-server scripts/ingest.ts",
     "postinstall": "prisma generate"
   },
   "dependencies": {
     "@prisma/adapter-better-sqlite3": "^7.10.1",
     "@prisma/client": "^7.10.1",
+    "@qdrant/js-client-rest": "^1.20.0",
     "next": "16.4.5",
     "react": "19.3.0",
     "react-dom": "19.3.0",
@@ -36,6 +38,11 @@
     "tsx": "^4.23.15",
     "typescript": "^5",
     "vitest": "^5.1.0"
+  },
+  "overrides": {
+    "@qdrant/js-client-rest": {
+      "undici": "7.30.1"
+    }
   },
   "allowScripts": {
     "better-sqlite3@12.11.1": true,
