@@ -1,5 +1,6 @@
 # Builds the standalone Next.js app. On start the container applies the Prisma
-# migrations and then serves the app on port 3000.
+# migrations and then serves the app on port 3000. The app ingests the
+# knowledge base into Qdrant before it handles its first request.
 
 FROM node:24.22.1-alpine AS base
 # Prisma's schema engine needs OpenSSL to apply migrations.
@@ -31,6 +32,9 @@ COPY --from=build --chown=node:node /app/prisma7.config.ts ./
 # The schema, the migrations, the database URL the Prisma config reads and the
 # empty data folder the volume mounts on.
 COPY --from=build --chown=node:node /app/database ./database
+# The markdown sources the app ingests at startup. The standalone build only
+# holds files the code imports, so the folder is copied on its own.
+COPY --from=build --chown=node:node /app/knowledge-base ./knowledge-base
 USER node
 EXPOSE 3000
 CMD ["sh", "-c", "node_modules/.bin/prisma migrate deploy && exec node server.js"]
