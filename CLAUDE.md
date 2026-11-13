@@ -9,7 +9,7 @@
 - `test/` sits next to `src/` and mirrors its folders. It holds the `*.test.ts` files and the fakes they use, and nothing in `src/` imports from it. Tests import from `src/` with `@/` and from `test/` with `@test/`. A stub the running app uses stays in `src/`.
 - `database/` sits next to `src/` and `test/`. It holds the Prisma schema, the migrations, the gitignored SQLite data, the generated Prisma client and `prisma.ts`, which creates the client. Code imports from it with `@database/`.
 - Services receive their dependencies as interfaces through the constructor. `src/shared/dependency-container.ts` is the only place that creates implementations.
-- Only repository implementations and `database/prisma.ts` import Prisma.
+- Only repository implementations and `database/prisma.ts` import Prisma. Only `RetrievalRepository` imports the Qdrant client.
 - Errors extend `AppError`. Server actions are wrapped in `safeAction` and return `{ ok: false, error }` instead of throwing.
 
 ## Agent skills

@@ -7,20 +7,36 @@ A local quiz app for students revising for an exam. The student names a topic, t
 ### Knowledge
 
 **Knowledge base**:
-All the source material that quizzes can draw on.
-_Avoid_: vector database, data, content, corpus
+All the source material that quizzes can draw on: the markdown files in `knowledge-base/`.
+_Avoid_: data, content, corpus
 
 **Source**:
-One document in the knowledge base, such as a PDF or a markdown file.
+One document in the knowledge base, a markdown file. Its first `# ` heading is its title.
 _Avoid_: material, file
+
+**Ingestion**:
+Loading the knowledge base into the vector database: splitting every new or changed source into chunks, embedding them and storing them. The app ingests when it starts, and `npm run ingest` does it by hand.
+_Avoid_: indexing, import, upload
+
+**Vector database**:
+Qdrant, which stores every chunk with its embedding and finds the chunks most similar to a topic. It holds no quiz data, which stays in SQLite.
+_Avoid_: vector store, knowledge base, index
+
+**Embedding**:
+The list of numbers, a vector, that the embedding model turns a chunk or a topic into. Texts with similar meanings get embeddings that point in similar directions.
+_Avoid_: encoding
 
 **Chunk**:
 A piece of a source that retrieval can return.
 _Avoid_: passage, snippet, embedding
 
 **Similarity**:
-How closely a chunk matches the topic it was retrieved for. Higher means a closer match.
+How closely a chunk matches the topic it was retrieved for: the cosine similarity of their embeddings. Higher means a closer match, and retrieval keeps only chunks at or above the similarity threshold.
 _Avoid_: score, relevance, distance
+
+**Similarity threshold**:
+The lowest similarity a chunk needs to be retrieved. The group calibrates it with `npm run retrieval:scores`, and a new embedding model or new material needs a new one. ADR-0003 records the current value.
+_Avoid_: cutoff, minimum score
 
 ### Quizzes
 
