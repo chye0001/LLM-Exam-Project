@@ -1,0 +1,634 @@
+{
+ "qwen3.5:2b|fbb61e476d6e47f05c4dfe81bdc8eadceb09b7ba": {
+  "prediction": 53.0,
+  "seconds": 5.1171748749911785
+ },
+ "qwen3.5:2b|2babfc4ae3f611e1e2c465fa87627604a3bf3601": {
+  "prediction": 63.0,
+  "seconds": 0.4224439999088645
+ },
+ "qwen3.5:2b|c572e7f19e30d3738465b2fba0a6255d6212b24e": {
+  "prediction": 125.0,
+  "seconds": 0.4669330830220133
+ },
+ "qwen3.5:2b|cdbaf7ce32265a48e9abba14f9d65db038db9675": {
+  "prediction": 83.0,
+  "seconds": 0.3738090000115335
+ },
+ "qwen3.5:2b|88bd7d3e8cabde8c30bb78c59486af1d07d1f717": {
+  "prediction": 130.0,
+  "seconds": 0.4404189999913797
+ },
+ "qwen3.5:2b|ab2e9af6dd8ef1f7c56cc820684f10b8411fa766": {
+  "prediction": 83.0,
+  "seconds": 0.387723374995403
+ },
+ "qwen3.5:2b|8d8bc4e7f16480892b5c49c2d3351a52b622c2c1": {
+  "prediction": 135.0,
+  "seconds": 0.38950137502979487
+ },
+ "qwen3.5:2b|1739e379dd724067a0ebf66e7c1baa9ab4277996": {
+  "prediction": 134.0,
+  "seconds": 0.3648736249888316
+ },
+ "qwen3.5:2b|be4a7d2ccdf1a11268709dba113166e9847e560b": {
+  "prediction": 180.0,
+  "seconds": 0.40183033305220306
+ },
+ "qwen3.5:2b|24eb0629ba1173ca985dfeda88852bc8a0c326fa": {
+  "prediction": 124.0,
+  "seconds": 0.40637158299796283
+ },
+ "qwen3.5:2b|b3da8c828bedbaf1a9e111c75d911889bf293a5b": {
+  "prediction": 240.0,
+  "seconds": 0.38512674998492
+ },
+ "qwen3.5:2b|7b1e5dcd5e1f75277cb3621e60c7669d2c0380cc": {
+  "prediction": 148.0,
+  "seconds": 0.4435843749670312
+ },
+ "qwen3.5:2b|64dfd7ceb25ce32d775cc9d8fd8aa4521a82ed8c": {
+  "prediction": 280.0,
+  "seconds": 0.4463147500064224
+ },
+ "qwen3.5:2b|6a281d057afc64c5a3a67d9738c3b76e10aaa4b8": {
+  "prediction": 83.0,
+  "seconds": 0.4498802500311285
+ },
+ "qwen3.5:2b|7b2994e21dba39346fc0430f0a955021eefa0c75": {
+  "prediction": 120.0,
+  "seconds": 0.41868983290623873
+ },
+ "qwen3.5:2b|1cdc415b51502dd8e7a6bc291fb3ad9c903c2c40": {
+  "prediction": 74.3,
+  "seconds": 0.3750877920538187
+ },
+ "qwen3.5:2b|6e4412472a2f0e268601a6b39b7082e415e963e9": {
+  "prediction": 100.0,
+  "seconds": 0.4066094580339268
+ },
+ "qwen3.5:2b|d1a6741fc2660320054884deafec0227875a07a9": {
+  "prediction": 74.0,
+  "seconds": 0.4396945829503238
+ },
+ "qwen3.5:2b|fb2f31ce1e0cefe4d4c2dc1386310ad96899695b": {
+  "prediction": 84.0,
+  "seconds": 0.37728591705672443
+ },
+ "qwen3.5:2b|39cc2f284cb72051fd9f3f15f78a5498461de2b3": {
+  "prediction": 63.0,
+  "seconds": 0.3811149999964982
+ },
+ "qwen3.5:2b|c741b2583209b5be6dc3e830ee8c2e10464dc17a": {
+  "prediction": 146.0,
+  "seconds": 0.40836362494155765
+ },
+ "qwen3.5:2b|eae9a44dd6db6e1c96a180ba1fb6682b59d4d7ca": {
+  "prediction": 55.0,
+  "seconds": 0.4109653339255601
+ },
+ "qwen3.5:2b|543b60698ff4bc70c66cf3bc1da281909170592e": {
+  "prediction": 124.0,
+  "seconds": 0.3984483329113573
+ },
+ "qwen3.5:2b|fd56987189464135fd3792e0545a4d94a16d5630": {
+  "prediction": 168.0,
+  "seconds": 0.4021441249642521
+ },
+ "qwen3.5:2b|2961ccb97c26ba0305fb1545cc4f86ed331b63d7": {
+  "prediction": 82.0,
+  "seconds": 0.3880054169567302
+ },
+ "qwen3.5:2b|990e2c85001475959ad3eb3bf67d0bb6cfa2ad3e": {
+  "prediction": 104.0,
+  "seconds": 0.3922703330172226
+ },
+ "qwen3.5:2b|b207e4de3d804bef33b772bedcbed3a98bff9b06": {
+  "prediction": 68.0,
+  "seconds": 0.37400395795702934
+ },
+ "qwen3.5:2b|0106aa7e62b77d49d520ceeb46e097d9bee66e57": {
+  "prediction": 168.0,
+  "seconds": 0.425305875018239
+ },
+ "qwen3.5:2b|94bafce6a27896c80548a8c8ba65d99fcc995ef8": {
+  "prediction": 68.0,
+  "seconds": 0.4057469579856843
+ },
+ "qwen3.5:2b|5746c3a9205b0d4fa223ebdef3302095b3b4a4ae": {
+  "prediction": 63.0,
+  "seconds": 0.44944674998987466
+ },
+ "qwen3.5:2b|0ee30c187f60e12d5dfaea403c41bc4a7cc5bb4c": {
+  "prediction": 268.0,
+  "seconds": 0.4085744589101523
+ },
+ "qwen3.5:2b|8c8b1e91ae65ee086765eb26e0ad024c084e53d6": {
+  "prediction": 145.0,
+  "seconds": 0.41645050002261996
+ },
+ "qwen3.5:2b|41926cea0e32b44171f3e4dc5f8ca1dfec5710ee": {
+  "prediction": 148.0,
+  "seconds": 0.38765475002583116
+ },
+ "qwen3.5:2b|5130dca752cdf179ae2fcf037df38d638aef4f8b": {
+  "prediction": 74.0,
+  "seconds": 0.3785246250918135
+ },
+ "qwen3.5:2b|e8671bcf5826ed9e122343c8003d5e8851fa2bbf": {
+  "prediction": 158.0,
+  "seconds": 0.406852624961175
+ },
+ "qwen3.5:2b|3d22ab5c08b8dc8dc7726386cef5b18619219ab7": {
+  "prediction": 134.0,
+  "seconds": 0.3929278329014778
+ },
+ "qwen3.5:2b|a71ddae58952322be33c3e582a0645e2570c39de": {
+  "prediction": 150.0,
+  "seconds": 0.36057291692122817
+ },
+ "qwen3.5:2b|88d48c57868869d8983ddf70764c58fe3f8895e6": {
+  "prediction": 83.0,
+  "seconds": 0.3685060419375077
+ },
+ "qwen3.5:2b|2b22fa7833db7cdab8649d2bcb568105b9dd9a48": {
+  "prediction": 158.0,
+  "seconds": 0.38358770904596895
+ },
+ "qwen3.5:2b|65e8cb80b74b8366011be89d32e8c1dd3ebc521a": {
+  "prediction": 280.0,
+  "seconds": 0.3975760410539806
+ },
+ "qwen3.5:2b|61b65e22dff5e417c0239197902d9aea9f3728b2": {
+  "prediction": 156.0,
+  "seconds": 0.39824183308519423
+ },
+ "qwen3.5:2b|93c220e1f8dc83675989e9b79b84140d50faf99f": {
+  "prediction": 63.0,
+  "seconds": 0.3935083330143243
+ },
+ "qwen3.5:2b|fc074ce90928bf6c60ea184d3bd1cad5552b4b57": {
+  "prediction": 74.6,
+  "seconds": 0.37980150000657886
+ },
+ "qwen3.5:2b|c8ca64f3ef38168a844bc3492b543610ef72b2a7": {
+  "prediction": 68.0,
+  "seconds": 0.3888283330015838
+ },
+ "qwen3.5:2b|7cc2ad98d3a8e5f2548f26697df726c028149c05": {
+  "prediction": 280.0,
+  "seconds": 0.3998975830618292
+ },
+ "qwen3.5:2b|71c11a2f1f4a74ad4ab91c1248dd35d5ccd9c7ac": {
+  "prediction": 268.0,
+  "seconds": 0.4411212920676917
+ },
+ "qwen3.5:2b|c75aa0d871a33d1ebaaad61c63a5d300c136cb3b": {
+  "prediction": 146.0,
+  "seconds": 0.4377836670028046
+ },
+ "qwen3.5:2b|2199fcc5e75d5efc6f0546bb470bef9b23fd0b47": {
+  "prediction": 65.0,
+  "seconds": 0.40553970797918737
+ },
+ "qwen3.5:2b|0d6e7767f823aeeb9ebf42ee6f7b1c866753e261": {
+  "prediction": 86.0,
+  "seconds": 0.48055108299013227
+ },
+ "qwen3.5:2b|571e267e707400454b119845655fec9b01f3fc1a": {
+  "prediction": 85.0,
+  "seconds": 0.5837847080547363
+ },
+ "qwen3.5:2b|f25b6cf66da4d8a361bd7e9dd28f97b6e9359b57": {
+  "prediction": 268.0,
+  "seconds": 0.39931508293375373
+ },
+ "qwen3.5:2b|0e68af89ae80af12e31851667d8cb62d8f353000": {
+  "prediction": 64.0,
+  "seconds": 0.42837670794688165
+ },
+ "qwen3.5:2b|9a8d42215a47441fc39acc216b579270699758c4": {
+  "prediction": 83.0,
+  "seconds": 0.44773687492124736
+ },
+ "qwen3.5:2b|edc40c7a6a96f8198eec40b5f885ecef59f46497": {
+  "prediction": 73.0,
+  "seconds": 0.3847612499957904
+ },
+ "qwen3.5:2b|9ced6327075a240b1b50862e188a7f19631ccb16": {
+  "prediction": 165.0,
+  "seconds": 0.5865870829438791
+ },
+ "qwen3.5:2b|a51cab0319070650fa3758ee0ee66deb58011927": {
+  "prediction": 100.0,
+  "seconds": 0.5703375829616562
+ },
+ "qwen3.5:2b|16a87c143dae64b934ad4ad851c7292f88289111": {
+  "prediction": 148.0,
+  "seconds": 0.40963200002443045
+ },
+ "qwen3.5:2b|8e9ccaf27c1c05a28e269cb53795a752a4c61b56": {
+  "prediction": 180.0,
+  "seconds": 0.4209895000094548
+ },
+ "qwen3.5:2b|ad3e77ba71d203754e764fef8cc3f35304f30d16": {
+  "prediction": 68.0,
+  "seconds": 0.4226922079687938
+ },
+ "qwen3.5:2b|ca4dcfda792901e223a8fe30e3c303082f01a53a": {
+  "prediction": 56.0,
+  "seconds": 0.39386791607830673
+ },
+ "qwen3.5:2b|ae76e2edcded7147effc2a76380996a2d180c07f": {
+  "prediction": 268.0,
+  "seconds": 0.7581860419595614
+ },
+ "qwen3.5:2b|4b4eeb4802d717484d95d9b69c02e63379dc6dbf": {
+  "prediction": 140.0,
+  "seconds": 0.5050403330242261
+ },
+ "qwen3.5:2b|c6b64b2bf729d371fb02d4874b53741c7b448f59": {
+  "prediction": 145.0,
+  "seconds": 0.487466000020504
+ },
+ "qwen3.5:2b|84a350f92e2deb84465aa6cfabec3ed0c128a0c0": {
+  "prediction": 68.0,
+  "seconds": 0.4528829579940066
+ },
+ "qwen3.5:2b|a2c9a8fb3968211cff6412a8d8c20306b397b32f": {
+  "prediction": 65.0,
+  "seconds": 0.7761381251038983
+ },
+ "qwen3.5:2b|2dbd5de0f7a5e48190364cea0cdca23580af0cca": {
+  "prediction": 58.0,
+  "seconds": 0.7336218750569969
+ },
+ "qwen3.5:2b|45aa21964ee5640c3d0e68b463e095e04357594d": {
+  "prediction": 63.0,
+  "seconds": 0.45617775002028793
+ },
+ "qwen3.5:2b|234acbc612919636d6bd07923db47862ce9b2ca3": {
+  "prediction": 62.0,
+  "seconds": 0.6449144170619547
+ },
+ "qwen3.5:2b|c52dca1231154fb1887103de143849325ac18aa9": {
+  "prediction": 140.0,
+  "seconds": 0.6417749579995871
+ },
+ "qwen3.5:2b|5b7e402e0ff3001e8aba2e24f48d778b63389e7c": {
+  "prediction": 158.0,
+  "seconds": 0.5637765419669449
+ },
+ "qwen3.5:2b|d980155746b4aa86de5c22ea4f9fca8ebf42504a": {
+  "prediction": 65.0,
+  "seconds": 0.9500427499879152
+ },
+ "qwen3.5:2b|7a73c79f2f33277b48d706da492062f195d41468": {
+  "prediction": 268.0,
+  "seconds": 0.9760180830489844
+ },
+ "qwen3.5:2b|d70dd0afa844ebdd2adac30ce108d9cd8962c175": {
+  "prediction": 130.0,
+  "seconds": 0.5916145000373945
+ },
+ "qwen3.5:2b|30d4e4b4f446adcb7c02932c6bb00f417b43bb34": {
+  "prediction": 68.0,
+  "seconds": 0.5300915420521051
+ },
+ "qwen3.5:2b|c8006be79b8ffab148947c982a8f08234c6b5fd8": {
+  "prediction": 175.0,
+  "seconds": 1.3127016669604927
+ },
+ "qwen3.5:2b|534b466188e341177aa0c4b1022a304f8d777554": {
+  "prediction": 130.0,
+  "seconds": 0.6239476250484586
+ },
+ "qwen3.5:2b|054c0fce048446425a889a4d4aaec9bf2ee51e78": {
+  "prediction": 160.0,
+  "seconds": 0.6500480419490486
+ },
+ "qwen3.5:2b|9523a79fd84adc6fd98f93cbeb73142afdd938c6": {
+  "prediction": 168.0,
+  "seconds": 0.7928679579636082
+ },
+ "qwen3.5:2b|e8a939a870a6047582f106b9a63bcfd6def7722e": {
+  "prediction": 68.0,
+  "seconds": 0.929613666026853
+ },
+ "qwen3.5:2b|3c3b0c46de691ac206feafc2e02735bbc94bdfcd": {
+  "prediction": 75.0,
+  "seconds": 0.8828937920043245
+ },
+ "qwen3.5:2b|5ddba495c4d35bff1a3789de46f195d518ff2665": {
+  "prediction": 96.0,
+  "seconds": 1.0321061670547351
+ },
+ "qwen3.5:2b|bd199276c8a0e8aac4d1a77b7a53f59d028b1579": {
+  "prediction": 65.0,
+  "seconds": 0.902125959051773
+ },
+ "qwen3.5:2b|d3ed8a9a11e5ce526581db58e70b6882756259f5": {
+  "prediction": 68.0,
+  "seconds": 1.1713704159483314
+ },
+ "qwen3.5:2b|b3f54f1c134bd60baadf51569e3b28185ef21793": {
+  "prediction": 84.0,
+  "seconds": 0.7826805000659078
+ },
+ "qwen3.5:2b|6187213d94131250f587ade0c831ba9e1c2da968": {
+  "prediction": 70.0,
+  "seconds": 1.0890678749419749
+ },
+ "qwen3.5:2b|371faae67aa4eb0fcb3ed7d4b5d1624e6e0a0491": {
+  "prediction": 180.0,
+  "seconds": 1.0369920410448685
+ },
+ "qwen3.5:2b|7e38c43d771babe9457af5c015bf230bf94e983d": {
+  "prediction": 68.0,
+  "seconds": 0.8578749579610303
+ },
+ "qwen3.5:2b|8e9d616c0496e70e83c2c64f5dad0582a4f98edf": {
+  "prediction": 100.0,
+  "seconds": 0.978867832920514
+ },
+ "qwen3.5:2b|feb91497aed0d01ce1dbfd0ec73ff56e56fabf31": {
+  "prediction": 72.0,
+  "seconds": 1.0435312910703942
+ },
+ "qwen3.5:2b|f18d959cf58ce4e416382dcf60162df1bbddf238": {
+  "prediction": 165.0,
+  "seconds": 1.3325066659599543
+ },
+ "qwen3.5:2b|7d72940c61ab4978eada76a9f95c23a34c36da3e": {
+  "prediction": 122.0,
+  "seconds": 2.037086166907102
+ },
+ "qwen3.5:2b|e03d34a9e0c0c12398d81d51cf380126e327de03": {
+  "prediction": 142.0,
+  "seconds": 0.8954223330365494
+ },
+ "qwen3.5:2b|34018660743f2020d3b9408c91149b097c0c00c8": {
+  "prediction": 68.0,
+  "seconds": 1.326004207949154
+ },
+ "qwen3.5:2b|14b5d2921c0336b97c5d14d3d9c557a492e1147b": {
+  "prediction": 122.0,
+  "seconds": 0.9076881250366569
+ },
+ "qwen3.5:2b|c8eb0f335e6a162b7b74c4ba7913746b8f3a9f4c": {
+  "prediction": 84.0,
+  "seconds": 0.8498867920134217
+ },
+ "qwen3.5:2b|8f8a6fea4497051daedafe787853ebb755dab664": {
+  "prediction": 95.0,
+  "seconds": 1.254602083005011
+ },
+ "qwen3.5:2b|4484535778960ee615532b11c868827d2dae20cb": {
+  "prediction": 74.0,
+  "seconds": 0.9240460420260206
+ },
+ "qwen3.5:2b|82044771e8d9b6740fab7dfc25664b8294dd05cd": {
+  "prediction": 84.0,
+  "seconds": 0.7922913329675794
+ },
+ "qwen3.5:2b|3e3cc464b3593564fdac8f264616314b0cb17bcd": {
+  "prediction": 76.0,
+  "seconds": 0.8191237079445273
+ },
+ "qwen3.5:2b|da903e836a0cc2b4f972ccacfed131418cf4af42": {
+  "prediction": 94.0,
+  "seconds": 0.8891569169936702
+ },
+ "qwen3.5:2b|b197ef3b13d0768474c5653e67db9e7469b22ff3": {
+  "prediction": 48.0,
+  "seconds": 1.180574957979843
+ },
+ "qwen3.5:2b|0ee0f04c8ae6a770424b119fafba8aeb1f8a385e": {
+  "prediction": 67.0,
+  "seconds": 0.8323467089794576
+ },
+ "qwen3.5:2b|48acf7a3cd2c41e1dba12dbc7d139d1f21db4a40": {
+  "prediction": 150.0,
+  "seconds": 0.964657292002812
+ },
+ "qwen3.5:2b|7b2f806dbd4c319b2faaa08d3b1e87eca8baa591": {
+  "prediction": 72.0,
+  "seconds": 0.7654686250025406
+ },
+ "qwen3.5:2b|18fa926c3835eb1b63ab9a13848e92f1f4d0e0cd": {
+  "prediction": 75.0,
+  "seconds": 0.7888927080202848
+ },
+ "qwen3.5:2b|6c55a5d768cf8c7babd57456f016360d14169f1d": {
+  "prediction": 86.0,
+  "seconds": 0.7992691659601405
+ },
+ "qwen3.5:2b|09f40738569033a191c75538c153ee1fae953145": {
+  "prediction": 88.0,
+  "seconds": 0.7419757500756532
+ },
+ "qwen3.5:2b|16cdffcca5512bab8610a8e9be8921370d4e3330": {
+  "prediction": 68.0,
+  "seconds": 0.8639219999313354
+ },
+ "qwen3.5:2b|732014723ea7710751b554158a17ed1e557c45d5": {
+  "prediction": 83.0,
+  "seconds": 0.8571986659662798
+ },
+ "qwen3.5:2b|f185927df1c95432761bb82d869cf2eef26751d1": {
+  "prediction": 150.0,
+  "seconds": 0.8334324170136824
+ },
+ "qwen3.5:2b|ec3b9872e42e64082a863d5b49e2897047f01e7a": {
+  "prediction": 95.0,
+  "seconds": 0.9044199590571225
+ },
+ "qwen3.5:2b|d1198d67d6236c057979c839612c68d0d90fdd5d": {
+  "prediction": 145.0,
+  "seconds": 0.8311081249266863
+ },
+ "qwen3.5:2b|606d0336361b2633e17c5f4bb51e394943f19aad": {
+  "prediction": 74.0,
+  "seconds": 0.8975505001144484
+ },
+ "qwen3.5:2b|4557e58caf87f370a9ae917260507dce30028b6c": {
+  "prediction": 185.0,
+  "seconds": 0.7441727078985423
+ },
+ "qwen3.5:2b|7a7235a0a35f6a611842b68321bb9a847dafd6cf": {
+  "prediction": 67.0,
+  "seconds": 0.7196396250510588
+ },
+ "qwen3.5:2b|107074f6d9cf24a638480ddf480ff0f35530a352": {
+  "prediction": 150.0,
+  "seconds": 0.7371843750588596
+ },
+ "qwen3.5:2b|2f5465ebd395a48cc33d7f45458f70c97bff4b81": {
+  "prediction": 80.0,
+  "seconds": 0.8968056669691578
+ },
+ "qwen3.5:2b|25d3503b46daeddebd51c2864b1e294d9736a1fb": {
+  "prediction": 150.0,
+  "seconds": 0.7827828340232372
+ },
+ "qwen3.5:2b|29946cfd9bcd31381ea2776041c7edc463443a96": {
+  "prediction": 200.0,
+  "seconds": 0.8088091670069844
+ },
+ "qwen3.5:2b|5e0ae3ef0495ebbb1d7cd52063f14266856a8c5b": {
+  "prediction": 150.0,
+  "seconds": 0.78625187498983
+ },
+ "qwen3.5:2b|b1f7a7d5e4c0ede5520628b68987e8ca74462a4c": {
+  "prediction": 75.0,
+  "seconds": 0.9958634580252692
+ },
+ "qwen3.5:2b|e355673be1c30e597c3659760c328474fb1ae792": {
+  "prediction": 76.0,
+  "seconds": 0.9417907909955829
+ },
+ "qwen3.5:2b|3191871b91c47d58f034ac36308ec9f1eb1d9f40": {
+  "prediction": 83.0,
+  "seconds": 0.7588591250823811
+ },
+ "qwen3.5:2b|a03b1969a601aa3ae13e82b00a22e240152d6bc5": {
+  "prediction": 150.0,
+  "seconds": 0.7512582920026034
+ },
+ "qwen3.5:2b|3e1a2cf4a33344b75c03ae915384377c91dda140": {
+  "prediction": 186.0,
+  "seconds": 0.7594846250722185
+ },
+ "qwen3.5:2b|c5b6c4589bdb2ccbd76daa7cb39f3738c90a6ac9": {
+  "prediction": 88.0,
+  "seconds": 0.715571083012037
+ },
+ "qwen3.5:2b|61e745a8e39c95d56e55c47f63d128cd0e169930": {
+  "prediction": 75.0,
+  "seconds": 0.708512790966779
+ },
+ "qwen3.5:2b|cedb5e9cbb58e15367874bed0e22536baa4cbf3f": {
+  "prediction": 86.0,
+  "seconds": 0.7460506659699604
+ },
+ "qwen3.5:2b|def8b7995d1aa1bbd838dd09a0867cfbadd2bec5": {
+  "prediction": 78.0,
+  "seconds": 0.837994790985249
+ },
+ "qwen3.5:2b|3f5f319645c3b373189d698520d095b76c326b9e": {
+  "prediction": 153.0,
+  "seconds": 1.0259952079504728
+ },
+ "qwen3.5:2b|3fe2332a2819bd870f5b2b0e6f294e4c68be14c9": {
+  "prediction": 95.0,
+  "seconds": 0.825055000022985
+ },
+ "qwen3.5:2b|78932d9ea0b84053af21a7e14417263900a40138": {
+  "prediction": 86.0,
+  "seconds": 0.7356164579978213
+ },
+ "qwen3.5:2b|c63a3e02b6bab3e31e4b86a028a15ba8e10e8485": {
+  "prediction": 75.0,
+  "seconds": 0.9363024579361081
+ },
+ "qwen3.5:2b|6e927ff78ba8da49a9a8975bc363cc9c57d4d158": {
+  "prediction": 110.0,
+  "seconds": 0.7288834589999169
+ },
+ "qwen3.5:2b|3a9c8d15d18ee20143c2115e2a9b2008f68ce1b7": {
+  "prediction": 105.0,
+  "seconds": 0.777856208034791
+ },
+ "qwen3.5:2b|f1566d04fd7a75c39822b2df2f55d347e2fb014f": {
+  "prediction": 145.0,
+  "seconds": 0.7584857499459758
+ },
+ "qwen3.5:2b|f8eb314880a2e77e209732dd1da639becd6cedd6": {
+  "prediction": 100.0,
+  "seconds": 0.7543297089869156
+ },
+ "qwen3.5:2b|e9971b02faa734bad7f8fe7005acc48ec58abca7": {
+  "prediction": 87.0,
+  "seconds": 0.8087869579903781
+ },
+ "qwen3.5:2b|95415c0b5d64c0a0642bab6ffa0dfab92f4001e3": {
+  "prediction": 95.0,
+  "seconds": 0.8863477080594748
+ },
+ "qwen3.5:2b|988fe15abfeaa1e06291f6bf12ddeac543b186fa": {
+  "prediction": 208.0,
+  "seconds": 1.0156049999641255
+ },
+ "qwen3.5:2b|688c8fed3edeb01e1f9f314186c7f93b751eecfe": {
+  "prediction": 90.0,
+  "seconds": 0.813848290941678
+ },
+ "qwen3.5:2b|0c0d74b5b2b4f7fe4e1d8f0f877d6b76e30e661c": {
+  "prediction": 115.0,
+  "seconds": 1.0037564999656752
+ },
+ "qwen3.5:2b|c6b3a449556e45281ac581664318a5c1e78bcc9b": {
+  "prediction": 98.0,
+  "seconds": 0.8489673329750076
+ },
+ "qwen3.5:2b|98fe43f831288ea0f7c349c694b722af2afa7df7": {
+  "prediction": 96.0,
+  "seconds": 0.7356113750720397
+ },
+ "qwen3.5:2b|ecd9fd64e40a73d51308bc3493dceec456b1fefb": {
+  "prediction": 83.0,
+  "seconds": 0.7619198750471696
+ },
+ "qwen3.5:2b|d262566286f1dc49ffb5d5b1841e3384feb3c2d7": {
+  "prediction": 93.0,
+  "seconds": 0.7188482079654932
+ },
+ "qwen3.5:2b|89c78c055844f3fe40a00962791f112beb3d0a6f": {
+  "prediction": 78.0,
+  "seconds": 0.7324802499497309
+ },
+ "qwen3.5:2b|9486eb235dcb344a3f9fc4f8197056969f273b08": {
+  "prediction": 140.0,
+  "seconds": 1.0539639160269871
+ },
+ "qwen3.5:2b|a8f4033c2813d6ee5953791ef705f62bb7b364b9": {
+  "prediction": 215.0,
+  "seconds": 0.8627400000113994
+ },
+ "qwen3.5:2b|b5697156ace79248aea58c5f0311c9b97035c296": {
+  "prediction": 86.0,
+  "seconds": 0.6325528749730438
+ },
+ "qwen3.5:2b|b420ac9321932e2d598409ba2534bf7b3a8b123a": {
+  "prediction": 162.0,
+  "seconds": 0.9365772090386599
+ },
+ "qwen3.5:2b|a3821752acbf34795c35ebaac5f87d4446e531a4": {
+  "prediction": 120.0,
+  "seconds": 0.8649559579789639
+ },
+ "qwen3.5:2b|4b013259c1b471c2995642bcd71c7be05b8c2d77": {
+  "prediction": 97.0,
+  "seconds": 1.000033708056435
+ },
+ "qwen3.5:2b|ea5236f203525dbf59ec225d2918928349171453": {
+  "prediction": 107.0,
+  "seconds": 1.0470490000443533
+ },
+ "qwen3.5:2b|d7ee47995947da45d6640888fc13c313990e6192": {
+  "prediction": 75.0,
+  "seconds": 0.7953165840590373
+ },
+ "qwen3.5:2b|2e35e38665f0be31721f4e243c0d39dcbc7e8923": {
+  "prediction": 153.0,
+  "seconds": 0.7079134589293972
+ },
+ "qwen3.5:2b|a00bbb4dfea2b13e9e1fd85d9a5412901f5851a3": {
+  "prediction": 150.0,
+  "seconds": 0.7813669169554487
+ },
+ "qwen3.5:2b|d3d887740cb2d6eeea03ff046ea157e4c247dbdb": {
+  "prediction": 88.0,
+  "seconds": 0.843424207996577
+ }
+}
