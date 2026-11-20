@@ -48,3 +48,17 @@ next-env.d.ts
 !/database/data/.gitkeep
 /database/generated/
 scripts/afk-issues.sh
+
+#python virtual environment
+.venv/
+venv/
+#python cache
+__pycache__/
+*.py[cod]
+#Jupyter checkpoints
+.ipynb_checkpoints/
+
+#generated machine learning files
+src/machine_learning/data/train_reference.csv
+src/machine_learning/data/test_holdout.csv
+src/machine_learning/data/*predictions*.csv
